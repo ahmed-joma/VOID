@@ -10,24 +10,32 @@
 <body>
 <div class="void-app" id="app">
 
+  <!-- ══ HEADER ══ -->
   <header class="void-header">
     <div class="void-logo">V<span>0</span>ID</div>
-    <div class="void-tagline" data-i18n="tagline">NO TRACE · NO PROOF · NOTHING</div>
+    <div class="void-tagline">NO TRACE · NO PROOF · NOTHING</div>
     <div class="void-nav">
       <div class="void-nav-left">
         <button class="void-tab active" data-tab="home">HOME</button>
         <button class="void-tab" data-tab="encode">ENCODE</button>
         <button class="void-tab" data-tab="decode">DECODE</button>
-        <button class="void-tab" data-tab="audio">AUDIO</button>
-        <button class="void-tab void-tab-special" data-tab="deaddrop">DEAD DROP</button>
-        <button class="void-tab void-tab-special" data-tab="visualkey">VISUAL KEY</button>
         <button class="void-tab" data-tab="about">ABOUT</button>
       </div>
       <div class="void-lang-switcher" id="langSwitcher"></div>
     </div>
+
+    <!-- ══ SUB-NAV (shown inside encode/decode) ══ -->
+    <div class="void-subnav" id="subNav">
+      <button class="void-subtab active" data-method="image">◎ IMAGE</button>
+      <button class="void-subtab" data-method="audio">🎵 AUDIO</button>
+      <button class="void-subtab" data-method="deaddrop">☠ DEAD DROP</button>
+      <button class="void-subtab" data-method="visualkey">👁 VISUAL KEY</button>
+    </div>
   </header>
 
-  <!-- HOME -->
+  <!-- ══════════════════════════════════
+       HOME
+  ══════════════════════════════════ -->
   <section id="tab-home" class="void-section active">
     <div class="void-hero">
       <div class="void-glitch" data-text="V0ID">V<span>0</span>ID</div>
@@ -36,49 +44,44 @@
       <div class="void-new-features">
         <div class="void-new-badge">NEW</div>
         <div class="void-new-list">
-          <div class="void-new-item">
-            <span class="void-new-icon">🎵</span>
-            <div><strong>AUDIO MODE</strong> — Hide messages inside music files. Send a song, receive a secret.</div>
-          </div>
-          <div class="void-new-item">
-            <span class="void-new-icon">☠️</span>
-            <div><strong>DEAD DROP</strong> — Hide your message inside a real Wikipedia or NASA image. Send only a URL.</div>
-          </div>
-          <div class="void-new-item">
-            <span class="void-new-icon">👁️</span>
-            <div><strong>VISUAL KEY</strong> — Use a photo as your password. Only that exact image can unlock the message.</div>
-          </div>
+          <div class="void-new-item"><span class="void-new-icon">🎵</span><div><strong>AUDIO</strong> — Hide messages inside music files. Send a song, receive a secret.</div></div>
+          <div class="void-new-item"><span class="void-new-icon">☠️</span><div><strong>DEAD DROP</strong> — Hide your message inside a real public image. Send only a URL key.</div></div>
+          <div class="void-new-item"><span class="void-new-icon">👁️</span><div><strong>VISUAL KEY</strong> — Use a photo as your password. Only that exact image can unlock.</div></div>
         </div>
       </div>
       <button class="void-cta" id="startBtn">ENTER VOID →</button>
     </div>
   </section>
 
-  <!-- ENCODE -->
+  <!-- ══════════════════════════════════
+       ENCODE
+  ══════════════════════════════════ -->
   <section id="tab-encode" class="void-section">
-    <div class="void-panel">
+
+    <!-- ── ENCODE › IMAGE ── -->
+    <div class="void-panel void-method" id="enc-image">
       <div class="void-panel-header">
         <span class="void-panel-title">ENCODE</span>
-        <span class="void-panel-sub">hide message in image</span>
+        <span class="void-panel-sub">hide in image</span>
       </div>
       <div class="void-mode-toggle">
-        <button class="void-mode-btn active" id="encImgBtn">◎ IMAGE MODE</button>
+        <button class="void-mode-btn active" id="encImgBtn">◎ IMAGE FILE</button>
         <button class="void-mode-btn" id="encTxtBtn">⬡ VOID CODE</button>
       </div>
-      <div id="enc-image-mode">
-        <label class="void-label">SELECT CARRIER IMAGE</label>
+      <div id="enc-img-carrier">
+        <label class="void-label">CARRIER IMAGE</label>
         <div class="void-img-picker">
           <div class="void-drop-zone" id="encDropZone">
             <input type="file" accept="image/png,image/bmp" id="encImageInput">
             <div class="void-drop-icon">↑</div>
             <div class="void-drop-text">drop PNG or BMP here</div>
-            <div class="void-drop-hint">JPEG compresses hidden data — PNG only</div>
+            <div class="void-drop-hint">JPEG destroys hidden data — PNG only</div>
           </div>
           <div class="void-img-loaded" id="encImgLoaded">
             <img class="void-img-loaded-img" id="encLoadedImg" src="" alt="">
             <div class="void-img-actions">
               <button class="void-img-action-btn replace" id="encReplaceBtn">↺ REPLACE</button>
-              <button class="void-img-action-btn danger" id="encDeleteBtn">✕ REMOVE</button>
+              <button class="void-img-action-btn danger"  id="encDeleteBtn">✕ REMOVE</button>
             </div>
             <div class="void-img-loaded-info">
               <div class="void-img-loaded-meta" id="encLoadedMeta"></div>
@@ -88,7 +91,7 @@
           </div>
         </div>
       </div>
-      <div id="enc-text-mode" style="display:none">
+      <div id="enc-code-info" style="display:none">
         <div class="void-info-box"><span class="void-info-icon">⬡</span>Message encrypted to a VOID CODE string. Send it as plain text.</div>
       </div>
       <label class="void-label">SECRET MESSAGE</label>
@@ -99,14 +102,8 @@
         <div class="void-capacity-text" id="encCapText"></div>
       </div>
       <div class="void-row">
-        <div>
-          <label class="void-label">PASSWORD</label>
-          <input type="password" class="void-input" id="encPassword" placeholder="Strong password...">
-        </div>
-        <div>
-          <label class="void-label">DECOY <span class="void-optional">(optional)</span></label>
-          <input type="text" class="void-input" id="encDecoy" placeholder="Shown on wrong password...">
-        </div>
+        <div><label class="void-label">PASSWORD</label><input type="password" class="void-input" id="encPassword" placeholder="Strong password..."></div>
+        <div><label class="void-label">DECOY <span class="void-optional">(optional)</span></label><input type="text" class="void-input" id="encDecoy" placeholder="Shown on wrong password..."></div>
       </div>
       <button class="void-btn" id="encodeBtn">ENCRYPT & HIDE</button>
       <div class="void-output" id="encOutput" style="display:none">
@@ -114,20 +111,136 @@
         <div id="encResult"></div>
       </div>
     </div>
+
+    <!-- ── ENCODE › AUDIO ── -->
+    <div class="void-panel void-method" id="enc-audio" style="display:none">
+      <div class="void-panel-header">
+        <span class="void-panel-title">ENCODE</span>
+        <span class="void-panel-sub">hide in audio</span>
+      </div>
+      <label class="void-label">AUDIO FILE</label>
+      <div class="void-drop-zone" id="audioDropZone">
+        <input type="file" accept="audio/*" id="audioInput">
+        <div class="void-drop-icon">♪</div>
+        <div class="void-drop-text">drop any audio file here</div>
+        <div class="void-drop-hint">MP3, WAV, OGG, FLAC — output will be WAV</div>
+      </div>
+      <div class="void-audio-preview" id="audioPreview" style="display:none">
+        <div class="void-audio-info" id="audioInfo"></div>
+        <audio controls id="audioPlayer" style="width:100%;margin-top:.75rem;filter:invert(1) hue-rotate(180deg);"></audio>
+      </div>
+      <label class="void-label" style="margin-top:1rem">SECRET MESSAGE</label>
+      <textarea class="void-textarea" id="audioMessage" placeholder="Type your secret message here..."></textarea>
+      <div class="void-capacity-bar" id="audioCapacity" style="display:none">
+        <div class="void-capacity-label">CAPACITY</div>
+        <div class="void-capacity-track"><div class="void-capacity-fill" id="audioCapFill"></div></div>
+        <div class="void-capacity-text" id="audioCapText"></div>
+      </div>
+      <label class="void-label">PASSWORD</label>
+      <input type="password" class="void-input" id="audioPassword" placeholder="Strong password...">
+      <button class="void-btn" id="audioEncodeBtn">🎵 HIDE IN AUDIO</button>
+      <div class="void-output" id="audioEncOutput" style="display:none">
+        <div class="void-output-header">ENCODED AUDIO READY</div>
+        <div id="audioEncResult"></div>
+      </div>
+    </div>
+
+    <!-- ── ENCODE › DEAD DROP ── -->
+    <div class="void-panel void-method" id="enc-deaddrop" style="display:none">
+      <div class="void-panel-header">
+        <span class="void-panel-title">ENCODE</span>
+        <span class="void-panel-sub">hide in public image</span>
+      </div>
+      <div class="void-dead-drop-explain">
+        <div class="void-explain-step"><span class="void-explain-num">01</span><span>Hide your message inside any public image (Wikipedia, NASA, etc.)</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">02</span><span>You get a short DEAD DROP KEY — looks like random noise</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">03</span><span>Recipient pastes key in DECODE › DEAD DROP + password → message appears</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">04</span><span>No file sent. No image attached. Nothing suspicious.</span></div>
+      </div>
+      <label class="void-label">PUBLIC IMAGE URL</label>
+      <input type="url" class="void-input" id="ddCustomUrl" placeholder="https://upload.wikimedia.org/...png">
+      <label class="void-label">SECRET MESSAGE</label>
+      <textarea class="void-textarea" id="ddMessage" placeholder="Your secret message..."></textarea>
+      <label class="void-label">PASSWORD</label>
+      <input type="password" class="void-input" id="ddPassword" placeholder="Strong password...">
+      <button class="void-btn" id="ddCreateDropBtn">☠ CREATE DEAD DROP</button>
+      <div class="void-output" id="ddCreateOutput" style="display:none">
+        <div class="void-output-header">DEAD DROP CREATED</div>
+        <div id="ddCreateResult"></div>
+      </div>
+      <div class="void-error" id="ddCreateError" style="display:none"></div>
+    </div>
+
+    <!-- ── ENCODE › VISUAL KEY ── -->
+    <div class="void-panel void-method" id="enc-visualkey" style="display:none">
+      <div class="void-panel-header">
+        <span class="void-panel-title">ENCODE</span>
+        <span class="void-panel-sub">lock with image key</span>
+      </div>
+      <div class="void-dead-drop-explain">
+        <div class="void-explain-step"><span class="void-explain-num">01</span><span>Choose any image as your secret key (selfie, photo, artwork)</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">02</span><span>VOID derives a 256-bit key from the image's visual fingerprint</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">03</span><span>Only that exact image can unlock — impossible to guess</span></div>
+      </div>
+      <label class="void-label">YOUR SECRET KEY IMAGE</label>
+      <div class="void-img-picker">
+        <div class="void-drop-zone" id="vkKeyDropZone">
+          <input type="file" accept="image/*" id="vkKeyInput">
+          <div class="void-drop-icon">👁</div>
+          <div class="void-drop-text">drop your secret key image</div>
+          <div class="void-drop-hint">Any image. Keep it safe — it's your password.</div>
+        </div>
+        <div class="void-img-loaded" id="vkKeyLoaded">
+          <img class="void-img-loaded-img" id="vkKeyImg" src="" alt="">
+          <div class="void-img-actions"><button class="void-img-action-btn danger" id="vkKeyClearBtn">✕ CHANGE KEY</button></div>
+          <div class="void-img-loaded-info">
+            <div class="void-img-loaded-meta">KEY IMAGE LOADED</div>
+            <div class="void-vk-fingerprint" id="vkEncFingerprint"></div>
+          </div>
+        </div>
+      </div>
+      <label class="void-label" style="margin-top:.5rem">CARRIER IMAGE (PNG)</label>
+      <div class="void-img-picker">
+        <div class="void-drop-zone" id="vkCarrierDropZone">
+          <input type="file" accept="image/png,image/bmp" id="vkCarrierInput">
+          <div class="void-drop-icon">↑</div>
+          <div class="void-drop-text">drop PNG carrier image</div>
+          <div class="void-drop-hint">The image that will carry the hidden message</div>
+        </div>
+        <div class="void-img-loaded" id="vkCarrierLoaded">
+          <img class="void-img-loaded-img" id="vkCarrierImg" src="" alt="">
+          <div class="void-img-actions"><button class="void-img-action-btn danger" id="vkCarrierClearBtn">✕ REMOVE</button></div>
+          <div class="void-img-loaded-info"><div class="void-img-loaded-meta" id="vkCarrierMeta"></div></div>
+        </div>
+      </div>
+      <label class="void-label">SECRET MESSAGE</label>
+      <textarea class="void-textarea" id="vkMessage" placeholder="Your secret message..."></textarea>
+      <button class="void-btn" id="vkEncodeBtn">👁 LOCK WITH IMAGE KEY</button>
+      <div class="void-output" id="vkEncOutput" style="display:none">
+        <div class="void-output-header">LOCKED — SEND THIS IMAGE</div>
+        <div id="vkEncResult"></div>
+      </div>
+      <div class="void-error" id="vkEncError" style="display:none"></div>
+    </div>
+
   </section>
 
-  <!-- DECODE -->
+  <!-- ══════════════════════════════════
+       DECODE
+  ══════════════════════════════════ -->
   <section id="tab-decode" class="void-section">
-    <div class="void-panel">
+
+    <!-- ── DECODE › IMAGE ── -->
+    <div class="void-panel void-method" id="dec-image">
       <div class="void-panel-header">
         <span class="void-panel-title">DECODE</span>
-        <span class="void-panel-sub">reveal hidden message</span>
+        <span class="void-panel-sub">reveal from image</span>
       </div>
       <div class="void-mode-toggle">
-        <button class="void-mode-btn active" id="decImgBtn">◎ IMAGE MODE</button>
+        <button class="void-mode-btn active" id="decImgBtn">◎ IMAGE FILE</button>
         <button class="void-mode-btn" id="decTxtBtn">⬡ VOID CODE</button>
       </div>
-      <div id="dec-image-mode">
+      <div id="dec-img-zone">
         <label class="void-label">ENCODED IMAGE</label>
         <div class="void-drop-zone-dec" id="decDropZone">
           <input type="file" accept="image/png,image/bmp" id="decImageInput">
@@ -140,7 +253,7 @@
           <div class="void-img-info-dec" id="decImgInfo"></div>
         </div>
       </div>
-      <div id="dec-text-mode" style="display:none">
+      <div id="dec-code-zone" style="display:none">
         <label class="void-label">VOID CODE</label>
         <textarea class="void-textarea" id="decVoidCode" placeholder="V01D://..."></textarea>
       </div>
@@ -154,254 +267,105 @@
       </div>
       <div class="void-error" id="decError" style="display:none"></div>
     </div>
-  </section>
 
-  <!-- AUDIO -->
-  <section id="tab-audio" class="void-section">
-    <div class="void-panel">
+    <!-- ── DECODE › AUDIO ── -->
+    <div class="void-panel void-method" id="dec-audio" style="display:none">
       <div class="void-panel-header">
-        <span class="void-panel-title">AUDIO</span>
-        <span class="void-panel-sub">hide message in sound</span>
+        <span class="void-panel-title">DECODE</span>
+        <span class="void-panel-sub">extract from audio</span>
       </div>
-      <div class="void-mode-toggle">
-        <button class="void-mode-btn active" id="audioEncBtn">🎵 HIDE IN AUDIO</button>
-        <button class="void-mode-btn" id="audioDecBtn">🔍 EXTRACT FROM AUDIO</button>
+      <label class="void-label">ENCODED WAV FILE</label>
+      <div class="void-drop-zone" id="audioDecDropZone">
+        <input type="file" accept="audio/wav" id="audioDecInput">
+        <div class="void-drop-icon">♫</div>
+        <div class="void-drop-text">drop the encoded WAV file</div>
+        <div class="void-drop-hint">must be the exact WAV from VOID</div>
       </div>
-
-      <!-- AUDIO ENCODE -->
-      <div id="audio-enc-mode">
-        <label class="void-label">SELECT AUDIO FILE</label>
-        <div class="void-drop-zone" id="audioDropZone">
-          <input type="file" accept="audio/*" id="audioInput">
-          <div class="void-drop-icon">♪</div>
-          <div class="void-drop-text">drop any audio file here</div>
-          <div class="void-drop-hint">MP3, WAV, OGG, FLAC — output will be WAV</div>
-        </div>
-
-        <div class="void-audio-preview" id="audioPreview" style="display:none">
-          <div class="void-audio-info" id="audioInfo"></div>
-          <audio controls id="audioPlayer" style="width:100%;margin-top:0.75rem;filter:invert(1) hue-rotate(180deg);"></audio>
-        </div>
-
-        <label class="void-label" style="margin-top:1rem;">SECRET MESSAGE</label>
-        <textarea class="void-textarea" id="audioMessage" placeholder="Type your secret message here..."></textarea>
-        <div class="void-capacity-bar" id="audioCapacity" style="display:none">
-          <div class="void-capacity-label">CAPACITY</div>
-          <div class="void-capacity-track"><div class="void-capacity-fill" id="audioCapFill"></div></div>
-          <div class="void-capacity-text" id="audioCapText"></div>
-        </div>
-        <label class="void-label">PASSWORD</label>
-        <input type="password" class="void-input" id="audioPassword" placeholder="Strong password...">
-        <button class="void-btn" id="audioEncodeBtn">HIDE IN AUDIO</button>
-        <div class="void-output" id="audioEncOutput" style="display:none">
-          <div class="void-output-header">ENCODED AUDIO READY</div>
-          <div id="audioEncResult"></div>
-        </div>
+      <div id="audioDecPreview" style="display:none">
+        <audio controls id="audioDecPlayer" style="width:100%;margin-bottom:1rem;filter:invert(1) hue-rotate(180deg);"></audio>
       </div>
-
-      <!-- AUDIO DECODE -->
-      <div id="audio-dec-mode" style="display:none">
-        <label class="void-label">ENCODED AUDIO FILE</label>
-        <div class="void-drop-zone" id="audioDecDropZone">
-          <input type="file" accept="audio/wav" id="audioDecInput">
-          <div class="void-drop-icon">♫</div>
-          <div class="void-drop-text">drop the encoded WAV file</div>
-          <div class="void-drop-hint">must be the exact WAV file from VOID</div>
-        </div>
-        <div id="audioDecPreview" style="display:none">
-          <audio controls id="audioDecPlayer" style="width:100%;margin-bottom:1rem;filter:invert(1) hue-rotate(180deg);"></audio>
-        </div>
-        <label class="void-label">PASSWORD</label>
-        <input type="password" class="void-input" id="audioDecPassword" placeholder="Enter the password...">
-        <button class="void-btn" id="audioDecodeBtn">EXTRACT MESSAGE</button>
-        <div class="void-output" id="audioDecOutput" style="display:none">
-          <div class="void-output-header">REVEALED MESSAGE</div>
-          <div class="void-revealed-msg" id="audioDecResult"></div>
-          <div class="void-self-destruct" id="audioSelfDestruct"></div>
-        </div>
-        <div class="void-error" id="audioDecError" style="display:none"></div>
+      <label class="void-label">PASSWORD</label>
+      <input type="password" class="void-input" id="audioDecPassword" placeholder="Enter the password...">
+      <button class="void-btn" id="audioDecodeBtn">🎵 EXTRACT MESSAGE</button>
+      <div class="void-output" id="audioDecOutput" style="display:none">
+        <div class="void-output-header">REVEALED MESSAGE</div>
+        <div class="void-revealed-msg" id="audioDecResult"></div>
+        <div class="void-self-destruct" id="audioSelfDestruct"></div>
       </div>
+      <div class="void-error" id="audioDecError" style="display:none"></div>
     </div>
-  </section>
 
-  <!-- DEAD DROP -->
-  <section id="tab-deaddrop" class="void-section">
-    <div class="void-panel">
+    <!-- ── DECODE › DEAD DROP ── -->
+    <div class="void-panel void-method" id="dec-deaddrop" style="display:none">
       <div class="void-panel-header">
-        <span class="void-panel-title">DEAD DROP</span>
-        <span class="void-panel-sub">hide in public internet images</span>
+        <span class="void-panel-title">DECODE</span>
+        <span class="void-panel-sub">retrieve from dead drop</span>
       </div>
-
-      <div class="void-dead-drop-explain">
-        <div class="void-explain-step"><span class="void-explain-num">01</span><span>You hide your message inside a real public image (Wikipedia, NASA, etc.)</span></div>
-        <div class="void-explain-step"><span class="void-explain-num">02</span><span>You send only a short DEAD DROP KEY — looks like a random string</span></div>
-        <div class="void-explain-step"><span class="void-explain-num">03</span><span>Recipient pastes the key here + password → message appears</span></div>
-        <div class="void-explain-step"><span class="void-explain-num">04</span><span>No file sent. No image attached. Nothing suspicious.</span></div>
+      <div class="void-info-box"><span class="void-info-icon">☠</span>Paste the DEAD DROP KEY. VOID fetches the public image and extracts the message automatically.</div>
+      <label class="void-label">DEAD DROP KEY</label>
+      <textarea class="void-textarea" id="ddKey" placeholder="VOID-DROP://..." style="min-height:80px;"></textarea>
+      <label class="void-label">OR UPLOAD ENCODED IMAGE DIRECTLY</label>
+      <div class="void-drop-zone-dec" id="ddReadDropZone">
+        <input type="file" accept="image/png,image/bmp" id="ddReadImageInput">
+        <div class="void-drop-icon">↓</div>
+        <div class="void-drop-text">drop encoded image (optional)</div>
+        <div class="void-drop-hint">use this if the public URL is unavailable</div>
       </div>
-
-      <div class="void-mode-toggle">
-        <button class="void-mode-btn active" id="ddCreateBtn">☠ CREATE DROP</button>
-        <button class="void-mode-btn" id="ddReadBtn">🔍 READ DROP</button>
+      <label class="void-label">PASSWORD</label>
+      <input type="password" class="void-input" id="ddReadPassword" placeholder="Password...">
+      <button class="void-btn" id="ddReadBtn">☠ RETRIEVE MESSAGE</button>
+      <div class="void-output" id="ddReadOutput" style="display:none">
+        <div class="void-output-header">RETRIEVED MESSAGE</div>
+        <div class="void-revealed-msg" id="ddReadResult"></div>
+        <div class="void-self-destruct" id="ddSelfDestruct"></div>
       </div>
-
-      <!-- CREATE -->
-      <div id="dd-create-mode">
-        <label class="void-label">SELECT SOURCE IMAGE</label>
-        <div class="void-dd-sources" id="ddSources">
-          <div class="void-dd-source-label">OR PASTE A DIRECT IMAGE URL:</div>
-          <input type="url" class="void-input" id="ddCustomUrl" placeholder="https://upload.wikimedia.org/...png">
-        </div>
-
-        <label class="void-label" style="margin-top:0.5rem;">SECRET MESSAGE</label>
-        <textarea class="void-textarea" id="ddMessage" placeholder="Your secret message..."></textarea>
-        <label class="void-label">PASSWORD</label>
-        <input type="password" class="void-input" id="ddPassword" placeholder="Strong password...">
-        <button class="void-btn" id="ddCreateDropBtn">☠ CREATE DEAD DROP</button>
-        <div class="void-output" id="ddCreateOutput" style="display:none">
-          <div class="void-output-header">DEAD DROP CREATED</div>
-          <div id="ddCreateResult"></div>
-        </div>
-        <div class="void-error" id="ddCreateError" style="display:none"></div>
-      </div>
-
-      <!-- READ -->
-      <div id="dd-read-mode" style="display:none">
-        <div class="void-info-box"><span class="void-info-icon">☠</span>Paste the DEAD DROP KEY you received. VOID will fetch the public image and extract your message.</div>
-        <label class="void-label">DEAD DROP KEY</label>
-        <textarea class="void-textarea" id="ddKey" placeholder="VOID-DROP://..." style="min-height:80px;"></textarea>
-        <label class="void-label">OR UPLOAD ENCODED IMAGE DIRECTLY</label>
-        <div class="void-drop-zone-dec" id="ddReadDropZone">
-          <input type="file" accept="image/png,image/bmp" id="ddReadImageInput">
-          <div class="void-drop-icon">↓</div>
-          <div class="void-drop-text">drop encoded image (optional)</div>
-        </div>
-        <label class="void-label">PASSWORD</label>
-        <input type="password" class="void-input" id="ddReadPassword" placeholder="Password...">
-        <button class="void-btn" id="ddReadBtn2">🔍 RETRIEVE MESSAGE</button>
-        <div class="void-output" id="ddReadOutput" style="display:none">
-          <div class="void-output-header">RETRIEVED MESSAGE</div>
-          <div class="void-revealed-msg" id="ddReadResult"></div>
-          <div class="void-self-destruct" id="ddSelfDestruct"></div>
-        </div>
-        <div class="void-error" id="ddReadError" style="display:none"></div>
-      </div>
+      <div class="void-error" id="ddReadError" style="display:none"></div>
     </div>
-  </section>
 
-  <!-- VISUAL KEY -->
-  <section id="tab-visualkey" class="void-section">
-    <div class="void-panel">
+    <!-- ── DECODE › VISUAL KEY ── -->
+    <div class="void-panel void-method" id="dec-visualkey" style="display:none">
       <div class="void-panel-header">
-        <span class="void-panel-title">VISUAL KEY</span>
-        <span class="void-panel-sub">your photo is your password</span>
+        <span class="void-panel-title">DECODE</span>
+        <span class="void-panel-sub">unlock with image key</span>
       </div>
-
-      <div class="void-dead-drop-explain">
-        <div class="void-explain-step"><span class="void-explain-num">01</span><span>Choose any image as your secret key (selfie, pet photo, anything)</span></div>
-        <div class="void-explain-step"><span class="void-explain-num">02</span><span>VOID derives a 256-bit key from the image's visual fingerprint</span></div>
-        <div class="void-explain-step"><span class="void-explain-num">03</span><span>Only that exact image can unlock the message — impossible to guess</span></div>
+      <label class="void-label">YOUR SECRET KEY IMAGE</label>
+      <div class="void-img-picker">
+        <div class="void-drop-zone" id="vkDecKeyDropZone">
+          <input type="file" accept="image/*" id="vkDecKeyInput">
+          <div class="void-drop-icon">👁</div>
+          <div class="void-drop-text">drop your key image</div>
+          <div class="void-drop-hint">Must be the same image used to lock</div>
+        </div>
+        <div class="void-img-loaded" id="vkDecKeyLoaded">
+          <img class="void-img-loaded-img" id="vkDecKeyImg" src="" alt="">
+          <div class="void-img-actions"><button class="void-img-action-btn danger" id="vkDecKeyClearBtn">✕ CHANGE</button></div>
+          <div class="void-img-loaded-info">
+            <div class="void-img-loaded-meta">KEY IMAGE LOADED</div>
+            <div class="void-vk-fingerprint" id="vkDecFingerprint"></div>
+          </div>
+        </div>
       </div>
-
-      <div class="void-mode-toggle">
-        <button class="void-mode-btn active" id="vkEncBtn">👁 LOCK WITH IMAGE</button>
-        <button class="void-mode-btn" id="vkDecBtn">🔓 UNLOCK WITH IMAGE</button>
+      <label class="void-label" style="margin-top:.5rem">ENCODED IMAGE</label>
+      <div class="void-drop-zone-dec" id="vkDecImgDropZone">
+        <input type="file" accept="image/png,image/bmp" id="vkDecImgInput">
+        <div class="void-drop-icon">↓</div>
+        <div class="void-drop-text">drop the encoded image</div>
       </div>
-
-      <!-- VK ENCODE -->
-      <div id="vk-enc-mode">
-        <label class="void-label">YOUR SECRET KEY IMAGE</label>
-        <div class="void-img-picker">
-          <div class="void-drop-zone" id="vkKeyDropZone">
-            <input type="file" accept="image/*" id="vkKeyInput">
-            <div class="void-drop-icon">👁</div>
-            <div class="void-drop-text">drop your secret key image</div>
-            <div class="void-drop-hint">Any image — selfie, photo, artwork. Keep it safe.</div>
-          </div>
-          <div class="void-img-loaded" id="vkKeyLoaded">
-            <img class="void-img-loaded-img" id="vkKeyImg" src="" alt="">
-            <div class="void-img-actions">
-              <button class="void-img-action-btn danger" id="vkKeyClearBtn">✕ CHANGE KEY</button>
-            </div>
-            <div class="void-img-loaded-info">
-              <div class="void-img-loaded-meta">KEY IMAGE LOADED</div>
-              <div class="void-vk-fingerprint" id="vkEncFingerprint"></div>
-            </div>
-          </div>
-        </div>
-
-        <label class="void-label" style="margin-top:1rem;">CARRIER IMAGE (PNG)</label>
-        <div class="void-img-picker">
-          <div class="void-drop-zone" id="vkCarrierDropZone">
-            <input type="file" accept="image/png,image/bmp" id="vkCarrierInput">
-            <div class="void-drop-icon">↑</div>
-            <div class="void-drop-text">drop PNG carrier image</div>
-            <div class="void-drop-hint">The image that will carry the hidden message</div>
-          </div>
-          <div class="void-img-loaded" id="vkCarrierLoaded">
-            <img class="void-img-loaded-img" id="vkCarrierImg" src="" alt="">
-            <div class="void-img-actions">
-              <button class="void-img-action-btn danger" id="vkCarrierClearBtn">✕ REMOVE</button>
-            </div>
-            <div class="void-img-loaded-info">
-              <div class="void-img-loaded-meta" id="vkCarrierMeta"></div>
-            </div>
-          </div>
-        </div>
-
-        <label class="void-label">SECRET MESSAGE</label>
-        <textarea class="void-textarea" id="vkMessage" placeholder="Your secret message..."></textarea>
-        <button class="void-btn" id="vkEncodeBtn">👁 LOCK WITH IMAGE KEY</button>
-        <div class="void-output" id="vkEncOutput" style="display:none">
-          <div class="void-output-header">LOCKED — SEND THIS IMAGE</div>
-          <div id="vkEncResult"></div>
-        </div>
-        <div class="void-error" id="vkEncError" style="display:none"></div>
+      <div class="void-img-preview-dec" id="vkDecImgPreview">
+        <img id="vkDecPreviewImg" src="" alt="">
       </div>
-
-      <!-- VK DECODE -->
-      <div id="vk-dec-mode" style="display:none">
-        <label class="void-label">YOUR SECRET KEY IMAGE</label>
-        <div class="void-img-picker">
-          <div class="void-drop-zone" id="vkDecKeyDropZone">
-            <input type="file" accept="image/*" id="vkDecKeyInput">
-            <div class="void-drop-icon">👁</div>
-            <div class="void-drop-text">drop your key image</div>
-            <div class="void-drop-hint">Must be the same image used to lock</div>
-          </div>
-          <div class="void-img-loaded" id="vkDecKeyLoaded">
-            <img class="void-img-loaded-img" id="vkDecKeyImg" src="" alt="">
-            <div class="void-img-actions">
-              <button class="void-img-action-btn danger" id="vkDecKeyClearBtn">✕ CHANGE</button>
-            </div>
-            <div class="void-img-loaded-info">
-              <div class="void-img-loaded-meta">KEY IMAGE LOADED</div>
-              <div class="void-vk-fingerprint" id="vkDecFingerprint"></div>
-            </div>
-          </div>
-        </div>
-
-        <label class="void-label" style="margin-top:1rem;">ENCODED IMAGE</label>
-        <div class="void-drop-zone-dec" id="vkDecImgDropZone">
-          <input type="file" accept="image/png,image/bmp" id="vkDecImgInput">
-          <div class="void-drop-icon">↓</div>
-          <div class="void-drop-text">drop the encoded image</div>
-        </div>
-        <div class="void-img-preview-dec" id="vkDecImgPreview">
-          <img id="vkDecPreviewImg" src="" alt="">
-        </div>
-
-        <button class="void-btn" id="vkDecodeBtn">🔓 UNLOCK WITH IMAGE KEY</button>
-        <div class="void-output" id="vkDecOutput" style="display:none">
-          <div class="void-output-header">UNLOCKED MESSAGE</div>
-          <div class="void-revealed-msg" id="vkDecResult"></div>
-          <div class="void-self-destruct" id="vkSelfDestruct"></div>
-        </div>
-        <div class="void-error" id="vkDecError" style="display:none"></div>
+      <button class="void-btn" id="vkDecodeBtn">🔓 UNLOCK WITH IMAGE KEY</button>
+      <div class="void-output" id="vkDecOutput" style="display:none">
+        <div class="void-output-header">UNLOCKED MESSAGE</div>
+        <div class="void-revealed-msg" id="vkDecResult"></div>
+        <div class="void-self-destruct" id="vkSelfDestruct"></div>
       </div>
+      <div class="void-error" id="vkDecError" style="display:none"></div>
     </div>
+
   </section>
 
-  <!-- ABOUT -->
+  <!-- ══ ABOUT ══ -->
   <section id="tab-about" class="void-section">
     <div class="void-panel void-about">
       <h2 class="void-about-title">HOW VOID WORKS</h2>
@@ -409,11 +373,11 @@
       <div class="void-warning-box">
         <div class="void-warning-title">⚠ OPERATIONAL SECURITY</div>
         <div class="void-warning-text">
-          — Send encoded images via Telegram or email (no compression).<br>
-          — Never use WhatsApp — it compresses images.<br>
-          — Share passwords through a completely separate channel.<br>
+          — Send encoded images via Telegram or email attachment (no compression).<br>
+          — Never use WhatsApp — it compresses images and destroys hidden data.<br>
           — For audio: send WAV files only — MP3 re-encoding destroys data.<br>
-          — Visual Key: store your key image safely — losing it = losing access.
+          — Visual Key: store your key image safely — losing it = losing access.<br>
+          — Share passwords through a completely separate channel.
         </div>
       </div>
       <a href="https://github.com/ahmed-joma/VOID" target="_blank" class="void-gh-link">VIEW SOURCE ON GITHUB →</a>
