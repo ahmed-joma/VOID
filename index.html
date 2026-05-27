@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOID — Hide Anything</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <div class="void-app" id="app">
+
+    <!-- HEADER -->
+    <header class="void-header">
+      <div class="void-logo">V<span>0</span>ID</div>
+      <div class="void-tagline">NO TRACE &nbsp;·&nbsp; NO PROOF &nbsp;·&nbsp; NOTHING</div>
+      <nav class="void-nav">
+        <button class="void-tab active" data-tab="home">HOME</button>
+        <button class="void-tab" data-tab="encode">ENCODE</button>
+        <button class="void-tab" data-tab="decode">DECODE</button>
+        <button class="void-tab" data-tab="about">ABOUT</button>
+      </nav>
+    </header>
+
+    <!-- HOME -->
+    <section id="tab-home" class="void-section active">
+      <div class="void-hero">
+        <div class="void-glitch" data-text="V0ID">V<span>0</span>ID</div>
+        <p class="void-hero-sub">hide anything inside anything.<br>zero server. zero logs. zero trace.</p>
+        <div class="void-features-grid">
+          <div class="void-feature">
+            <div class="void-feature-icon">⬡</div>
+            <div class="void-feature-title">AES-256 ENCRYPTION</div>
+            <div class="void-feature-desc">Military-grade encryption before hiding. Wrong password = nothing.</div>
+          </div>
+          <div class="void-feature">
+            <div class="void-feature-icon">◎</div>
+            <div class="void-feature-title">LSB STEGANOGRAPHY</div>
+            <div class="void-feature-desc">Message hidden in pixel data. Image looks 100% identical to the human eye.</div>
+          </div>
+          <div class="void-feature">
+            <div class="void-feature-icon">⊘</div>
+            <div class="void-feature-title">ZERO SERVER</div>
+            <div class="void-feature-desc">Everything runs in your browser. Nothing is sent anywhere. Ever.</div>
+          </div>
+          <div class="void-feature">
+            <div class="void-feature-icon">◌</div>
+            <div class="void-feature-title">SELF-DESTRUCT</div>
+            <div class="void-feature-desc">Revealed messages auto-wipe after 30 seconds. No copy. No trace.</div>
+          </div>
+          <div class="void-feature">
+            <div class="void-feature-icon">⬡</div>
+            <div class="void-feature-title">VOID CODE MODE</div>
+            <div class="void-feature-desc">No image needed. Encrypt to a text string that looks like random noise.</div>
+          </div>
+          <div class="void-feature">
+            <div class="void-feature-icon">◈</div>
+            <div class="void-feature-title">DECOY MESSAGES</div>
+            <div class="void-feature-desc">Wrong password reveals a fake message. Plausible deniability built-in.</div>
+          </div>
+        </div>
+        <button class="void-cta" id="startBtn">ENTER VOID →</button>
+      </div>
+    </section>
+
+    <!-- ENCODE -->
+    <section id="tab-encode" class="void-section">
+      <div class="void-panel">
+        <div class="void-panel-header">
+          <span class="void-panel-title">ENCODE</span>
+          <span class="void-panel-sub">hide a message</span>
+        </div>
+
+        <div class="void-mode-toggle">
+          <button class="void-mode-btn active" data-mode="image" id="encImgBtn">◎ IMAGE MODE</button>
+          <button class="void-mode-btn" data-mode="text" id="encTxtBtn">⬡ VOID CODE</button>
+        </div>
+
+        <!-- IMAGE MODE -->
+        <div id="enc-image-mode">
+          <label class="void-label">SELECT CARRIER IMAGE</label>
+          <div class="void-drop-zone" id="encDropZone">
+            <input type="file" accept="image/png,image/bmp" id="encImageInput">
+            <div class="void-drop-inner">
+              <div class="void-drop-icon">↑</div>
+              <div class="void-drop-text">drop PNG or BMP here</div>
+              <div class="void-drop-hint">JPEG compresses and destroys hidden data — use PNG only</div>
+            </div>
+          </div>
+          <div class="void-img-preview" id="encPreview">
+            <img id="encPreviewImg" src="" alt="preview">
+            <div class="void-img-info" id="encImgInfo"></div>
+          </div>
+        </div>
+
+        <!-- TEXT MODE -->
+        <div id="enc-text-mode" style="display:none">
+          <div class="void-info-box">
+            <span class="void-info-icon">⬡</span>
+            Your message will be encrypted and encoded as a VOID CODE string.<br>
+            Send it as plain text — it looks like random noise to anyone else.
+          </div>
+        </div>
+
+        <label class="void-label">SECRET MESSAGE</label>
+        <textarea class="void-textarea" id="encMessage" placeholder="Type your secret message here..."></textarea>
+
+        <div class="void-row">
+          <div>
+            <label class="void-label">PASSWORD</label>
+            <input type="password" class="void-input" id="encPassword" placeholder="Strong password...">
+          </div>
+          <div>
+            <label class="void-label">DECOY MESSAGE <span class="void-optional">(optional)</span></label>
+            <input type="text" class="void-input" id="encDecoy" placeholder="Shown on wrong password...">
+          </div>
+        </div>
+
+        <div class="void-capacity-bar" id="encCapacity" style="display:none">
+          <div class="void-capacity-label">CAPACITY</div>
+          <div class="void-capacity-track">
+            <div class="void-capacity-fill" id="encCapFill"></div>
+          </div>
+          <div class="void-capacity-text" id="encCapText"></div>
+        </div>
+
+        <button class="void-btn" id="encodeBtn">ENCRYPT & HIDE</button>
+
+        <div class="void-output" id="encOutput">
+          <div class="void-output-header" id="encOutputHeader">OUTPUT</div>
+          <div id="encResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DECODE -->
+    <section id="tab-decode" class="void-section">
+      <div class="void-panel">
+        <div class="void-panel-header">
+          <span class="void-panel-title">DECODE</span>
+          <span class="void-panel-sub">reveal a message</span>
+        </div>
+
+        <div class="void-mode-toggle">
+          <button class="void-mode-btn active" data-mode="image" id="decImgBtn">◎ IMAGE MODE</button>
+          <button class="void-mode-btn" data-mode="text" id="decTxtBtn">⬡ VOID CODE</button>
+        </div>
+
+        <!-- IMAGE MODE -->
+        <div id="dec-image-mode">
+          <label class="void-label">ENCODED IMAGE</label>
+          <div class="void-drop-zone" id="decDropZone">
+            <input type="file" accept="image/png,image/bmp" id="decImageInput">
+            <div class="void-drop-inner">
+              <div class="void-drop-icon">↓</div>
+              <div class="void-drop-text">drop the encoded image</div>
+              <div class="void-drop-hint">must be the exact file — do not compress or screenshot</div>
+            </div>
+          </div>
+          <div class="void-img-preview" id="decPreview">
+            <img id="decPreviewImg" src="" alt="preview">
+          </div>
+        </div>
+
+        <!-- TEXT MODE -->
+        <div id="dec-text-mode" style="display:none">
+          <label class="void-label">VOID CODE</label>
+          <textarea class="void-textarea" id="decVoidCode" placeholder="V01D://... paste the code here"></textarea>
+        </div>
+
+        <label class="void-label">PASSWORD</label>
+        <input type="password" class="void-input" id="decPassword" placeholder="Enter the password...">
+
+        <button class="void-btn" id="decodeBtn">REVEAL MESSAGE</button>
+
+        <div class="void-output" id="decOutput" style="display:none">
+          <div class="void-output-header">REVEALED MESSAGE</div>
+          <div class="void-revealed-msg" id="decResult"></div>
+          <div class="void-self-destruct" id="selfDestruct"></div>
+        </div>
+
+        <div class="void-error" id="decError" style="display:none"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="tab-about" class="void-section">
+      <div class="void-panel void-about">
+        <h2 class="void-about-title">HOW VOID WORKS</h2>
+
+        <div class="void-about-block">
+          <div class="void-about-num">01</div>
+          <div>
+            <div class="void-about-heading">AES-256-GCM ENCRYPTION</div>
+            <div class="void-about-text">Your message is encrypted using AES-256-GCM, the same algorithm used by governments and militaries worldwide. The key is derived from your password using PBKDF2 with 100,000 iterations and a random salt. Without the exact password, decryption is computationally impossible.</div>
+          </div>
+        </div>
+
+        <div class="void-about-block">
+          <div class="void-about-num">02</div>
+          <div>
+            <div class="void-about-heading">LSB STEGANOGRAPHY</div>
+            <div class="void-about-text">The encrypted data is hidden in the Least Significant Bits of the image's pixel values. Each pixel stores 1 bit. Changing the last bit of a color value (e.g., 200 → 201) is invisible to the human eye but encodes your data perfectly.</div>
+          </div>
+        </div>
+
+        <div class="void-about-block">
+          <div class="void-about-num">03</div>
+          <div>
+            <div class="void-about-heading">PLAUSIBLE DENIABILITY</div>
+            <div class="void-about-text">Set a decoy message shown when someone enters a wrong password. If you're ever forced to reveal a password, give them the decoy one. They'll see an innocent message and have no way to prove another one exists.</div>
+          </div>
+        </div>
+
+        <div class="void-about-block">
+          <div class="void-about-num">04</div>
+          <div>
+            <div class="void-about-heading">ZERO SERVER ARCHITECTURE</div>
+            <div class="void-about-text">VOID runs entirely in your browser using the Web Crypto API. No data is ever sent to any server. No logs. No analytics. No tracking. The code is open source — verify it yourself.</div>
+          </div>
+        </div>
+
+        <div class="void-warning-box">
+          <div class="void-warning-title">⚠ OPERATIONAL SECURITY</div>
+          <div class="void-warning-text">
+            VOID is only as strong as your operational security.<br>
+            — Send encoded images via Telegram (no compression) or email attachment.<br>
+            — Never use WhatsApp — it compresses images and destroys hidden data.<br>
+            — Share your password through a completely separate channel.<br>
+            — Use VOID CODE mode when you cannot send images.
+          </div>
+        </div>
+
+        <div class="void-footer-links">
+          <a href="https://github.com/ahmed-joma/VOID" target="_blank" class="void-gh-link">VIEW SOURCE ON GITHUB →</a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="src/crypto.js"></script>
+  <script src="src/steg.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
