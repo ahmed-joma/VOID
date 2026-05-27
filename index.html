@@ -5,12 +5,235 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VOID — Hide Anything</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖤</text></svg>">
-  <link rel="stylesheet" href="src/style.css?v=5">
+  <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #080808; --bg2: #0e0e0e; --bg3: #141414;
+  --border: #1e1e1e; --border2: #2a2a2a;
+  --text: #f0f0f0; --text2: #999; --text3: #555;
+  --accent: #7f77dd; --accent2: #534ab7; --accent3: #1a1830;
+  --red: #e24b4a; --mono: 'Courier New', Courier, monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--mono); font-size: 15px; font-weight: 700; line-height: 1.7; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+/* ══ HEADER ══ */
+.void-header { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); padding: 1.25rem 2rem 0; }
+.void-logo { font-size: 36px; font-weight: 900; letter-spacing: 0.55em; color: #fff; margin-bottom: 0.3rem; }
+.void-logo span { color: var(--accent); }
+.void-tagline { font-size: 13px; font-weight: 900; letter-spacing: 0.3em; color: var(--text3); margin-bottom: 1rem; }
+
+/* ── Main nav ── */
+.void-nav { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); }
+.void-nav-left { display: flex; }
+.void-tab { padding: 0.75rem 1.5rem; background: none; border: none; border-bottom: 3px solid transparent; color: var(--text2); font-family: var(--mono); font-size: 13px; font-weight: 900; letter-spacing: 0.2em; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
+.void-tab:hover { color: #ddd; }
+.void-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── Sub nav ── */
+.void-subnav {
+  display: none;
+  gap: 0;
+  background: var(--bg2);
+  border-top: 1px solid var(--border2);
+  padding: 0 2rem;
+  margin: 0 -2rem;
+}
+.void-subnav.show { display: flex; }
+
+.void-subtab {
+  padding: 0.6rem 1.4rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.void-subtab:hover { color: var(--text2); background: var(--bg3); }
+.void-subtab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--accent3); }
+
+/* ── Lang ── */
+.void-lang-switcher { display: flex; gap: 0.25rem; padding: 0.5rem 0; }
+.void-lang-btn { padding: 0.3rem 0.7rem; background: none; border: 1px solid transparent; color: var(--text3); font-family: var(--mono); font-size: 12px; font-weight: 900; letter-spacing: 0.12em; cursor: pointer; transition: all 0.2s; border-radius: 2px; }
+.void-lang-btn:hover { color: var(--text2); border-color: var(--border2); }
+.void-lang-btn.active { color: var(--accent); border-color: var(--accent2); background: var(--accent3); }
+
+/* ══ SECTIONS ══ */
+.void-section { display: none; }
+.void-section.active { display: block; }
+.void-method { display: none; }
+.void-method.active { display: block; }
+
+/* ══ HERO ══ */
+.void-hero { text-align: center; padding: 5rem 2rem 4rem; max-width: 1000px; margin: 0 auto; }
+.void-glitch { font-size: clamp(72px,14vw,130px); font-weight: 900; letter-spacing: 0.45em; color: #fff; margin-bottom: 1.25rem; position: relative; display: inline-block; }
+.void-glitch span { color: var(--accent); }
+.void-glitch::before,.void-glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; right: 0; letter-spacing: 0.45em; }
+.void-glitch::before { color: var(--accent); animation: glitch1 4s infinite; clip-path: polygon(0 0,100% 0,100% 35%,0 35%); opacity: 0.4; }
+.void-glitch::after { color: #fff; animation: glitch2 4s infinite; clip-path: polygon(0 65%,100% 65%,100% 100%,0 100%); opacity: 0.15; }
+@keyframes glitch1 { 0%,90%,100%{transform:translate(0)} 92%{transform:translate(-3px,1px)} 94%{transform:translate(3px,-1px)} 96%{transform:translate(-2px,0)} }
+@keyframes glitch2 { 0%,90%,100%{transform:translate(0)} 91%{transform:translate(2px,2px)} 93%{transform:translate(-2px,-1px)} 95%{transform:translate(1px,0)} }
+.void-hero-sub { font-size: 15px; font-weight: 700; letter-spacing: 0.18em; color: var(--text2); margin-bottom: 3.5rem; line-height: 2.4; }
+.void-features-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 2rem; }
+.void-feature { background: var(--bg); padding: 1.75rem 1.5rem; text-align: left; transition: background 0.2s; }
+.void-feature:hover { background: var(--bg2); }
+.void-feature-icon { font-size: 22px; color: var(--accent); margin-bottom: 0.75rem; }
+.void-feature-title { font-size: 13px; font-weight: 900; letter-spacing: 0.18em; color: #ccc; margin-bottom: 0.6rem; }
+.void-feature-desc { font-size: 13px; font-weight: 700; color: var(--text3); line-height: 1.9; }
+.void-new-features { background: var(--bg2); border: 1px solid var(--border2); padding: 1.5rem; margin-bottom: 2.5rem; text-align: left; }
+.void-new-badge { display: inline-block; background: var(--accent); color: #fff; font-size: 10px; font-weight: 900; letter-spacing: 0.25em; padding: 0.2rem 0.6rem; margin-bottom: 1rem; }
+.void-new-list { display: flex; flex-direction: column; gap: 0.75rem; }
+.void-new-item { display: flex; align-items: flex-start; gap: 0.75rem; font-size: 13px; font-weight: 700; color: var(--text2); line-height: 1.7; }
+.void-new-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.void-new-item strong { color: var(--text); }
+.void-cta { padding: 1.1rem 3.5rem; background: var(--accent); color: #fff; border: none; font-family: var(--mono); font-size: 15px; font-weight: 900; letter-spacing: 0.35em; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+.void-cta:hover { background: var(--accent2); }
+.void-cta:active { transform: scale(0.98); }
+
+/* ══ PANEL ══ */
+.void-panel { max-width: 720px; margin: 2rem auto; padding: 0 1.5rem 3rem; }
+.void-panel-header { padding: 1.5rem 0 1rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; display: flex; align-items: baseline; gap: 1rem; }
+.void-panel-title { font-size: 22px; font-weight: 900; letter-spacing: 0.35em; color: #fff; }
+.void-panel-sub { font-size: 13px; font-weight: 700; letter-spacing: 0.15em; color: var(--text3); }
+
+/* ══ MODE TOGGLE ══ */
+.void-mode-toggle { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+.void-mode-btn { flex: 1; padding: 0.7rem; background: var(--bg2); border: 1px solid var(--border2); color: var(--text2); font-family: var(--mono); font-size: 13px; font-weight: 900; letter-spacing: 0.12em; cursor: pointer; transition: all 0.2s; }
+.void-mode-btn.active { background: var(--accent3); border-color: var(--accent2); color: var(--accent); }
+.void-mode-btn:hover:not(.active) { color: #ddd; background: var(--bg3); }
+
+/* ══ FORM ══ */
+.void-label { display: block; font-size: 12px; font-weight: 900; letter-spacing: 0.22em; color: var(--text2); margin-bottom: 0.45rem; }
+.void-optional { color: var(--text3); font-size: 11px; font-weight: 700; }
+.void-input, .void-textarea { width: 100%; background: var(--bg2); border: 1px solid var(--border2); color: var(--text); font-family: var(--mono); font-size: 14px; font-weight: 700; padding: 0.85rem 1rem; margin-bottom: 1.25rem; outline: none; transition: border-color 0.2s; appearance: none; }
+.void-input:focus, .void-textarea:focus { border-color: var(--accent2); }
+.void-textarea { resize: vertical; min-height: 110px; }
+.void-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.void-row > div .void-input { margin-bottom: 1.25rem; }
+[dir="rtl"] .void-input,[dir="rtl"] .void-textarea { text-align: right; }
+
+/* ══ IMAGE PICKER ══ */
+.void-img-picker { position: relative; margin-bottom: 1.25rem; }
+.void-drop-zone { border: 1px dashed var(--border2); padding: 2.75rem; text-align: center; cursor: pointer; position: relative; transition: border-color 0.3s, background 0.3s; overflow: hidden; }
+.void-drop-zone:hover,.void-drop-zone.drag-over { border-color: var(--accent); background: var(--accent3); }
+.void-drop-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.void-drop-icon { font-size: 28px; color: var(--text3); margin-bottom: 0.6rem; transition: color 0.2s; }
+.void-drop-zone:hover .void-drop-icon { color: var(--accent); }
+.void-drop-text { font-size: 14px; font-weight: 900; color: var(--text2); letter-spacing: 0.12em; }
+.void-drop-hint { font-size: 12px; font-weight: 700; color: var(--text3); margin-top: 0.5rem; }
+.void-img-loaded { display: none; position: relative; border: 1px solid var(--border2); overflow: hidden; background: var(--bg2); }
+.void-img-loaded.show { display: block; }
+.void-img-loaded-img { width: 100%; height: 220px; object-fit: cover; display: block; filter: brightness(0.55) saturate(0.8); transition: filter 0.3s; }
+.void-img-loaded:hover .void-img-loaded-img { filter: brightness(0.45) saturate(0.7); }
+.void-img-loaded-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 0.6rem 1rem; background: linear-gradient(transparent,rgba(0,0,0,0.92)); display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.void-img-loaded-meta { font-size: 11px; font-weight: 900; letter-spacing: 0.1em; color: var(--accent); line-height: 1.6; }
+.void-img-loaded-name { font-size: 10px; font-weight: 700; color: var(--text3); max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.void-img-actions { position: absolute; top: 0; left: 0; right: 0; padding: 0.75rem; display: flex; justify-content: flex-end; gap: 0.5rem; opacity: 0; transition: opacity 0.25s; }
+.void-img-loaded:hover .void-img-actions { opacity: 1; }
+.void-img-action-btn { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.85rem; background: rgba(8,8,8,0.88); border: 1px solid var(--border2); color: var(--text2); font-family: var(--mono); font-size: 11px; font-weight: 900; letter-spacing: 0.12em; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(4px); }
+.void-img-action-btn:hover { background: rgba(20,20,20,0.95); border-color: var(--border); color: var(--text); }
+.void-img-action-btn.danger:hover { border-color: var(--red); color: var(--red); }
+.void-img-action-btn.replace:hover { border-color: var(--accent2); color: var(--accent); }
+.void-replace-input { display: none; }
+
+/* ══ DEC DROP ZONE ══ */
+.void-drop-zone-dec { border: 1px dashed var(--border2); padding: 2.75rem; text-align: center; cursor: pointer; margin-bottom: 1.25rem; position: relative; transition: border-color 0.2s, background 0.2s; }
+.void-drop-zone-dec:hover,.void-drop-zone-dec.drag-over { border-color: var(--accent2); background: var(--accent3); }
+.void-drop-zone-dec input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.void-img-preview-dec { display: none; margin-bottom: 1.25rem; border: 1px solid var(--border); position: relative; }
+.void-img-preview-dec.show { display: block; }
+.void-img-preview-dec img { width: 100%; max-height: 180px; object-fit: cover; display: block; filter: brightness(0.65); }
+.void-img-info-dec { position: absolute; bottom: 0; left: 0; right: 0; padding: 0.5rem 0.75rem; background: rgba(0,0,0,0.8); font-size: 12px; font-weight: 900; letter-spacing: 0.1em; color: var(--accent); }
+
+/* ══ CAPACITY ══ */
+.void-capacity-bar { margin-bottom: 1.25rem; display: none; }
+.void-capacity-bar.show { display: block; }
+.void-capacity-label { font-size: 12px; font-weight: 900; letter-spacing: 0.22em; color: var(--text2); margin-bottom: 0.4rem; }
+.void-capacity-track { height: 3px; background: var(--border2); margin-bottom: 0.4rem; }
+.void-capacity-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+.void-capacity-fill.warn { background: var(--red); }
+.void-capacity-text { font-size: 12px; font-weight: 700; color: var(--text3); }
+
+/* ══ INFO & EXPLAIN ══ */
+.void-info-box { background: var(--bg2); border: 1px solid var(--border2); padding: 1.1rem 1.25rem; margin-bottom: 1.25rem; font-size: 13px; font-weight: 700; color: var(--text2); line-height: 1.9; display: flex; gap: 0.75rem; align-items: flex-start; }
+.void-info-icon { color: var(--accent); font-size: 18px; flex-shrink: 0; }
+.void-dead-drop-explain { background: var(--bg2); border: 1px solid var(--border2); border-left: 3px solid var(--accent2); padding: 1.25rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.void-explain-step { display: flex; align-items: flex-start; gap: 1rem; font-size: 13px; font-weight: 700; color: var(--text2); line-height: 1.7; }
+.void-explain-num { font-size: 11px; font-weight: 900; color: var(--accent); letter-spacing: 0.1em; flex-shrink: 0; margin-top: 2px; }
+
+/* ══ BUTTON ══ */
+.void-btn { width: 100%; padding: 1.1rem; background: var(--accent); color: #fff; border: none; font-family: var(--mono); font-size: 14px; font-weight: 900; letter-spacing: 0.35em; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+.void-btn:hover { background: var(--accent2); }
+.void-btn:active { transform: scale(0.99); }
+.void-btn:disabled { background: var(--bg3); color: var(--text3); cursor: not-allowed; }
+
+/* ══ OUTPUT ══ */
+.void-output { background: var(--bg2); border: 1px solid var(--border2); padding: 1.25rem; margin-top: 1.25rem; }
+.void-output-header { font-size: 12px; font-weight: 900; letter-spacing: 0.22em; color: var(--text2); margin-bottom: 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); }
+.void-revealed-msg { font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.9; white-space: pre-wrap; word-break: break-word; }
+.void-self-destruct { font-size: 12px; font-weight: 900; color: var(--red); letter-spacing: 0.18em; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+.void-error { background: #1a0808; border: 1px solid #5c1a1a; color: var(--red); font-size: 13px; font-weight: 900; letter-spacing: 0.1em; padding: 0.85rem 1rem; margin-top: 1rem; }
+.void-code-output { font-size: 12px; font-weight: 700; color: var(--accent); word-break: break-all; line-height: 1.9; background: var(--bg); padding: 1rem; border: 1px solid var(--border); margin-bottom: 0.75rem; }
+.void-copy-btn { background: none; border: 1px solid var(--border2); color: var(--text2); font-family: var(--mono); font-size: 12px; font-weight: 900; letter-spacing: 0.15em; padding: 0.45rem 1rem; cursor: pointer; transition: all 0.2s; }
+.void-copy-btn:hover { color: #ddd; border-color: #555; }
+.void-dl-btn { display: block; margin-top: 0.75rem; padding: 0.75rem 1.5rem; background: var(--accent3); border: 1px solid var(--accent2); color: var(--accent); font-family: var(--mono); font-size: 13px; font-weight: 900; letter-spacing: 0.22em; text-decoration: none; text-align: center; transition: background 0.2s; }
+.void-dl-btn:hover { background: var(--accent2); color: #fff; }
+.void-dead-drop-key { background: var(--bg); border: 1px solid var(--accent2); padding: 1rem; margin-bottom: 0.75rem; font-size: 11px; font-weight: 700; color: var(--accent); word-break: break-all; line-height: 1.8; }
+
+/* ══ AUDIO ══ */
+.void-audio-preview { background: var(--bg2); border: 1px solid var(--border2); padding: 1rem 1.25rem; margin-bottom: 1.25rem; }
+.void-audio-info { font-size: 12px; font-weight: 900; color: var(--accent); letter-spacing: 0.1em; }
+
+/* ══ VISUAL KEY ══ */
+.void-vk-fingerprint { display: flex; gap: 3px; margin-top: 0.5rem; align-items: center; }
+.void-vk-fingerprint img { width: 32px; height: 32px; image-rendering: pixelated; border: 1px solid var(--accent2); }
+.void-vk-fingerprint-label { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 0.1em; margin-left: 0.5rem; }
+
+/* ══ ABOUT ══ */
+.void-about { max-width: 680px; }
+.void-about-title { font-size: 16px; font-weight: 900; letter-spacing: 0.3em; color: #fff; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.void-about-block { display: flex; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.void-about-num { font-size: 13px; font-weight: 900; color: var(--accent); flex-shrink: 0; }
+.void-about-heading { font-size: 13px; font-weight: 900; letter-spacing: 0.2em; color: #ccc; margin-bottom: 0.6rem; }
+.void-about-text { font-size: 13px; font-weight: 700; color: var(--text3); line-height: 1.95; }
+.void-warning-box { background: #150f00; border: 1px solid #3d2d00; padding: 1.25rem; margin-bottom: 2rem; }
+.void-warning-title { font-size: 13px; font-weight: 900; letter-spacing: 0.15em; color: #ba7517; margin-bottom: 0.75rem; }
+.void-warning-text { font-size: 13px; font-weight: 700; color: #5a4415; line-height: 2.1; }
+.void-gh-link { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 900; letter-spacing: 0.2em; border-bottom: 1px solid var(--accent2); padding-bottom: 2px; transition: color 0.2s; }
+.void-gh-link:hover { color: #fff; }
+
+/* ══ SCROLLBAR ══ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 600px) {
+  .void-header { padding: 0.75rem 1rem 0; }
+  .void-panel { padding: 0 1rem 2rem; }
+  .void-row { grid-template-columns: 1fr; }
+  .void-hero { padding: 3rem 1rem 2rem; }
+  .void-about-block { flex-direction: column; gap: 0.5rem; }
+  .void-tab { padding: 0.6rem 0.75rem; font-size: 11px; letter-spacing: 0.1em; }
+  .void-subtab { padding: 0.5rem 0.75rem; font-size: 11px; }
+  .void-lang-btn { font-size: 10px; padding: 0.2rem 0.4rem; }
+  .void-img-actions { opacity: 1; }
+  .void-subnav { margin: 0 -1rem; padding: 0 1rem; overflow-x: auto; }
+}
+
+  </style>
 </head>
 <body>
 <div class="void-app" id="app">
 
-  <!-- ══ HEADER ══ -->
   <header class="void-header">
     <div class="void-logo">V<span>0</span>ID</div>
     <div class="void-tagline">NO TRACE · NO PROOF · NOTHING</div>
@@ -23,8 +246,6 @@
       </div>
       <div class="void-lang-switcher" id="langSwitcher"></div>
     </div>
-
-    <!-- ══ SUB-NAV (shown inside encode/decode) ══ -->
     <div class="void-subnav" id="subNav">
       <button class="void-subtab active" data-method="image">◎ IMAGE</button>
       <button class="void-subtab" data-method="audio">🎵 AUDIO</button>
@@ -33,9 +254,7 @@
     </div>
   </header>
 
-  <!-- ══════════════════════════════════
-       HOME
-  ══════════════════════════════════ -->
+  <!-- HOME -->
   <section id="tab-home" class="void-section active">
     <div class="void-hero">
       <div class="void-glitch" data-text="V0ID">V<span>0</span>ID</div>
@@ -44,26 +263,20 @@
       <div class="void-new-features">
         <div class="void-new-badge">NEW</div>
         <div class="void-new-list">
-          <div class="void-new-item"><span class="void-new-icon">🎵</span><div><strong>AUDIO</strong> — Hide messages inside music files. Send a song, receive a secret.</div></div>
-          <div class="void-new-item"><span class="void-new-icon">☠️</span><div><strong>DEAD DROP</strong> — Hide your message inside a real public image. Send only a URL key.</div></div>
-          <div class="void-new-item"><span class="void-new-icon">👁️</span><div><strong>VISUAL KEY</strong> — Use a photo as your password. Only that exact image can unlock.</div></div>
+          <div class="void-new-item"><span class="void-new-icon">🎵</span><div><strong>AUDIO</strong> — Hide messages inside music. Send a song, receive a secret.</div></div>
+          <div class="void-new-item"><span class="void-new-icon">☠️</span><div><strong>DEAD DROP</strong> — Hide in a real public image. Send only a URL key.</div></div>
+          <div class="void-new-item"><span class="void-new-icon">👁️</span><div><strong>VISUAL KEY</strong> — Use a photo as your password. Only that image unlocks.</div></div>
         </div>
       </div>
       <button class="void-cta" id="startBtn">ENTER VOID →</button>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════
-       ENCODE
-  ══════════════════════════════════ -->
+  <!-- ENCODE -->
   <section id="tab-encode" class="void-section">
 
-    <!-- ── ENCODE › IMAGE ── -->
-    <div class="void-panel void-method" id="enc-image">
-      <div class="void-panel-header">
-        <span class="void-panel-title">ENCODE</span>
-        <span class="void-panel-sub">hide in image</span>
-      </div>
+    <div class="void-panel" id="enc-image" style="display:none">
+      <div class="void-panel-header"><span class="void-panel-title">ENCODE</span><span class="void-panel-sub">hide in image</span></div>
       <div class="void-mode-toggle">
         <button class="void-mode-btn active" id="encImgBtn">◎ IMAGE FILE</button>
         <button class="void-mode-btn" id="encTxtBtn">⬡ VOID CODE</button>
@@ -81,7 +294,7 @@
             <img class="void-img-loaded-img" id="encLoadedImg" src="" alt="">
             <div class="void-img-actions">
               <button class="void-img-action-btn replace" id="encReplaceBtn">↺ REPLACE</button>
-              <button class="void-img-action-btn danger"  id="encDeleteBtn">✕ REMOVE</button>
+              <button class="void-img-action-btn danger" id="encDeleteBtn">✕ REMOVE</button>
             </div>
             <div class="void-img-loaded-info">
               <div class="void-img-loaded-meta" id="encLoadedMeta"></div>
@@ -91,12 +304,10 @@
           </div>
         </div>
       </div>
-      <div id="enc-code-info" style="display:none">
-        <div class="void-info-box"><span class="void-info-icon">⬡</span>Message encrypted to a VOID CODE string. Send it as plain text.</div>
-      </div>
+      <div id="enc-code-info" style="display:none"><div class="void-info-box"><span class="void-info-icon">⬡</span>Message encrypted to VOID CODE. Send as plain text.</div></div>
       <label class="void-label">SECRET MESSAGE</label>
       <textarea class="void-textarea" id="encMessage" placeholder="Type your secret message here..."></textarea>
-      <div class="void-capacity-bar" id="encCapacity">
+      <div class="void-capacity-bar" id="encCapacity" style="display:none">
         <div class="void-capacity-label">CAPACITY</div>
         <div class="void-capacity-track"><div class="void-capacity-fill" id="encCapFill"></div></div>
         <div class="void-capacity-text" id="encCapText"></div>
@@ -106,55 +317,29 @@
         <div><label class="void-label">DECOY <span class="void-optional">(optional)</span></label><input type="text" class="void-input" id="encDecoy" placeholder="Shown on wrong password..."></div>
       </div>
       <button class="void-btn" id="encodeBtn">ENCRYPT & HIDE</button>
-      <div class="void-output" id="encOutput" style="display:none">
-        <div class="void-output-header" id="encOutputHeader">OUTPUT</div>
-        <div id="encResult"></div>
-      </div>
+      <div class="void-output" id="encOutput" style="display:none"><div class="void-output-header" id="encOutputHeader">OUTPUT</div><div id="encResult"></div></div>
     </div>
 
-    <!-- ── ENCODE › AUDIO ── -->
-    <div class="void-panel void-method" id="enc-audio" style="display:none">
-      <div class="void-panel-header">
-        <span class="void-panel-title">ENCODE</span>
-        <span class="void-panel-sub">hide in audio</span>
-      </div>
+    <div class="void-panel" id="enc-audio" style="display:none">
+      <div class="void-panel-header"><span class="void-panel-title">ENCODE</span><span class="void-panel-sub">hide in audio</span></div>
       <label class="void-label">AUDIO FILE</label>
-      <div class="void-drop-zone" id="audioDropZone">
-        <input type="file" accept="audio/*" id="audioInput">
-        <div class="void-drop-icon">♪</div>
-        <div class="void-drop-text">drop any audio file here</div>
-        <div class="void-drop-hint">MP3, WAV, OGG, FLAC — output will be WAV</div>
-      </div>
-      <div class="void-audio-preview" id="audioPreview" style="display:none">
-        <div class="void-audio-info" id="audioInfo"></div>
-        <audio controls id="audioPlayer" style="width:100%;margin-top:.75rem;filter:invert(1) hue-rotate(180deg);"></audio>
-      </div>
+      <div class="void-drop-zone" id="audioDropZone"><input type="file" accept="audio/*" id="audioInput"><div class="void-drop-icon">♪</div><div class="void-drop-text">drop any audio file here</div><div class="void-drop-hint">MP3, WAV, OGG — output will be WAV</div></div>
+      <div class="void-audio-preview" id="audioPreview" style="display:none"><div class="void-audio-info" id="audioInfo"></div><audio controls id="audioPlayer" style="width:100%;margin-top:.75rem;filter:invert(1) hue-rotate(180deg);"></audio></div>
       <label class="void-label" style="margin-top:1rem">SECRET MESSAGE</label>
-      <textarea class="void-textarea" id="audioMessage" placeholder="Type your secret message here..."></textarea>
-      <div class="void-capacity-bar" id="audioCapacity" style="display:none">
-        <div class="void-capacity-label">CAPACITY</div>
-        <div class="void-capacity-track"><div class="void-capacity-fill" id="audioCapFill"></div></div>
-        <div class="void-capacity-text" id="audioCapText"></div>
-      </div>
+      <textarea class="void-textarea" id="audioMessage" placeholder="Type your secret message..."></textarea>
+      <div class="void-capacity-bar" id="audioCapacity" style="display:none"><div class="void-capacity-label">CAPACITY</div><div class="void-capacity-track"><div class="void-capacity-fill" id="audioCapFill"></div></div><div class="void-capacity-text" id="audioCapText"></div></div>
       <label class="void-label">PASSWORD</label>
       <input type="password" class="void-input" id="audioPassword" placeholder="Strong password...">
       <button class="void-btn" id="audioEncodeBtn">🎵 HIDE IN AUDIO</button>
-      <div class="void-output" id="audioEncOutput" style="display:none">
-        <div class="void-output-header">ENCODED AUDIO READY</div>
-        <div id="audioEncResult"></div>
-      </div>
+      <div class="void-output" id="audioEncOutput" style="display:none"><div class="void-output-header">ENCODED AUDIO READY</div><div id="audioEncResult"></div></div>
     </div>
 
-    <!-- ── ENCODE › DEAD DROP ── -->
-    <div class="void-panel void-method" id="enc-deaddrop" style="display:none">
-      <div class="void-panel-header">
-        <span class="void-panel-title">ENCODE</span>
-        <span class="void-panel-sub">hide in public image</span>
-      </div>
+    <div class="void-panel" id="enc-deaddrop" style="display:none">
+      <div class="void-panel-header"><span class="void-panel-title">ENCODE</span><span class="void-panel-sub">hide in public image</span></div>
       <div class="void-dead-drop-explain">
-        <div class="void-explain-step"><span class="void-explain-num">01</span><span>Hide your message inside any public image (Wikipedia, NASA, etc.)</span></div>
-        <div class="void-explain-step"><span class="void-explain-num">02</span><span>You get a short DEAD DROP KEY — looks like random noise</span></div>
-        <div class="void-explain-step"><span class="void-explain-num">03</span><span>Recipient pastes key in DECODE › DEAD DROP + password → message appears</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">01</span><span>Hide your message inside any public image URL</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">02</span><span>You get a DEAD DROP KEY — looks like random noise</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">03</span><span>Recipient pastes key in DECODE › DEAD DROP + password</span></div>
         <div class="void-explain-step"><span class="void-explain-num">04</span><span>No file sent. No image attached. Nothing suspicious.</span></div>
       </div>
       <label class="void-label">PUBLIC IMAGE URL</label>
@@ -164,233 +349,1560 @@
       <label class="void-label">PASSWORD</label>
       <input type="password" class="void-input" id="ddPassword" placeholder="Strong password...">
       <button class="void-btn" id="ddCreateDropBtn">☠ CREATE DEAD DROP</button>
-      <div class="void-output" id="ddCreateOutput" style="display:none">
-        <div class="void-output-header">DEAD DROP CREATED</div>
-        <div id="ddCreateResult"></div>
-      </div>
+      <div class="void-output" id="ddCreateOutput" style="display:none"><div class="void-output-header">DEAD DROP CREATED</div><div id="ddCreateResult"></div></div>
       <div class="void-error" id="ddCreateError" style="display:none"></div>
     </div>
 
-    <!-- ── ENCODE › VISUAL KEY ── -->
-    <div class="void-panel void-method" id="enc-visualkey" style="display:none">
-      <div class="void-panel-header">
-        <span class="void-panel-title">ENCODE</span>
-        <span class="void-panel-sub">lock with image key</span>
-      </div>
+    <div class="void-panel" id="enc-visualkey" style="display:none">
+      <div class="void-panel-header"><span class="void-panel-title">ENCODE</span><span class="void-panel-sub">lock with image key</span></div>
       <div class="void-dead-drop-explain">
-        <div class="void-explain-step"><span class="void-explain-num">01</span><span>Choose any image as your secret key (selfie, photo, artwork)</span></div>
-        <div class="void-explain-step"><span class="void-explain-num">02</span><span>VOID derives a 256-bit key from the image's visual fingerprint</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">01</span><span>Choose any image as your secret key</span></div>
+        <div class="void-explain-step"><span class="void-explain-num">02</span><span>VOID derives a 256-bit key from its visual fingerprint</span></div>
         <div class="void-explain-step"><span class="void-explain-num">03</span><span>Only that exact image can unlock — impossible to guess</span></div>
       </div>
       <label class="void-label">YOUR SECRET KEY IMAGE</label>
       <div class="void-img-picker">
-        <div class="void-drop-zone" id="vkKeyDropZone">
-          <input type="file" accept="image/*" id="vkKeyInput">
-          <div class="void-drop-icon">👁</div>
-          <div class="void-drop-text">drop your secret key image</div>
-          <div class="void-drop-hint">Any image. Keep it safe — it's your password.</div>
-        </div>
-        <div class="void-img-loaded" id="vkKeyLoaded">
-          <img class="void-img-loaded-img" id="vkKeyImg" src="" alt="">
-          <div class="void-img-actions"><button class="void-img-action-btn danger" id="vkKeyClearBtn">✕ CHANGE KEY</button></div>
-          <div class="void-img-loaded-info">
-            <div class="void-img-loaded-meta">KEY IMAGE LOADED</div>
-            <div class="void-vk-fingerprint" id="vkEncFingerprint"></div>
-          </div>
-        </div>
+        <div class="void-drop-zone" id="vkKeyDropZone"><input type="file" accept="image/*" id="vkKeyInput"><div class="void-drop-icon">👁</div><div class="void-drop-text">drop your secret key image</div><div class="void-drop-hint">Any image. This IS your password.</div></div>
+        <div class="void-img-loaded" id="vkKeyLoaded"><img class="void-img-loaded-img" id="vkKeyImg" src="" alt=""><div class="void-img-actions"><button class="void-img-action-btn danger" id="vkKeyClearBtn">✕ CHANGE</button></div><div class="void-img-loaded-info"><div class="void-img-loaded-meta">KEY LOADED</div><div class="void-vk-fingerprint" id="vkEncFingerprint"></div></div></div>
       </div>
       <label class="void-label" style="margin-top:.5rem">CARRIER IMAGE (PNG)</label>
       <div class="void-img-picker">
-        <div class="void-drop-zone" id="vkCarrierDropZone">
-          <input type="file" accept="image/png,image/bmp" id="vkCarrierInput">
-          <div class="void-drop-icon">↑</div>
-          <div class="void-drop-text">drop PNG carrier image</div>
-          <div class="void-drop-hint">The image that will carry the hidden message</div>
-        </div>
-        <div class="void-img-loaded" id="vkCarrierLoaded">
-          <img class="void-img-loaded-img" id="vkCarrierImg" src="" alt="">
-          <div class="void-img-actions"><button class="void-img-action-btn danger" id="vkCarrierClearBtn">✕ REMOVE</button></div>
-          <div class="void-img-loaded-info"><div class="void-img-loaded-meta" id="vkCarrierMeta"></div></div>
-        </div>
+        <div class="void-drop-zone" id="vkCarrierDropZone"><input type="file" accept="image/png,image/bmp" id="vkCarrierInput"><div class="void-drop-icon">↑</div><div class="void-drop-text">drop PNG carrier image</div></div>
+        <div class="void-img-loaded" id="vkCarrierLoaded"><img class="void-img-loaded-img" id="vkCarrierImg" src="" alt=""><div class="void-img-actions"><button class="void-img-action-btn danger" id="vkCarrierClearBtn">✕ REMOVE</button></div><div class="void-img-loaded-info"><div class="void-img-loaded-meta" id="vkCarrierMeta"></div></div></div>
       </div>
       <label class="void-label">SECRET MESSAGE</label>
       <textarea class="void-textarea" id="vkMessage" placeholder="Your secret message..."></textarea>
       <button class="void-btn" id="vkEncodeBtn">👁 LOCK WITH IMAGE KEY</button>
-      <div class="void-output" id="vkEncOutput" style="display:none">
-        <div class="void-output-header">LOCKED — SEND THIS IMAGE</div>
-        <div id="vkEncResult"></div>
-      </div>
+      <div class="void-output" id="vkEncOutput" style="display:none"><div class="void-output-header">LOCKED IMAGE</div><div id="vkEncResult"></div></div>
       <div class="void-error" id="vkEncError" style="display:none"></div>
     </div>
 
   </section>
 
-  <!-- ══════════════════════════════════
-       DECODE
-  ══════════════════════════════════ -->
+  <!-- DECODE -->
   <section id="tab-decode" class="void-section">
 
-    <!-- ── DECODE › IMAGE ── -->
-    <div class="void-panel void-method" id="dec-image">
-      <div class="void-panel-header">
-        <span class="void-panel-title">DECODE</span>
-        <span class="void-panel-sub">reveal from image</span>
-      </div>
+    <div class="void-panel" id="dec-image" style="display:none">
+      <div class="void-panel-header"><span class="void-panel-title">DECODE</span><span class="void-panel-sub">reveal from image</span></div>
       <div class="void-mode-toggle">
         <button class="void-mode-btn active" id="decImgBtn">◎ IMAGE FILE</button>
         <button class="void-mode-btn" id="decTxtBtn">⬡ VOID CODE</button>
       </div>
-      <div id="dec-img-zone">
-        <label class="void-label">ENCODED IMAGE</label>
-        <div class="void-drop-zone-dec" id="decDropZone">
-          <input type="file" accept="image/png,image/bmp" id="decImageInput">
-          <div class="void-drop-icon">↓</div>
-          <div class="void-drop-text">drop the encoded image</div>
-          <div class="void-drop-hint">must be exact file — no compression</div>
-        </div>
-        <div class="void-img-preview-dec" id="decPreview">
-          <img id="decPreviewImg" src="" alt="">
-          <div class="void-img-info-dec" id="decImgInfo"></div>
-        </div>
+      <div id="dec-img-zone"><label class="void-label">ENCODED IMAGE</label>
+        <div class="void-drop-zone-dec" id="decDropZone"><input type="file" accept="image/png,image/bmp" id="decImageInput"><div class="void-drop-icon">↓</div><div class="void-drop-text">drop the encoded image</div><div class="void-drop-hint">must be exact file — no compression</div></div>
+        <div class="void-img-preview-dec" id="decPreview"><img id="decPreviewImg" src="" alt=""><div class="void-img-info-dec" id="decImgInfo"></div></div>
       </div>
-      <div id="dec-code-zone" style="display:none">
-        <label class="void-label">VOID CODE</label>
-        <textarea class="void-textarea" id="decVoidCode" placeholder="V01D://..."></textarea>
-      </div>
+      <div id="dec-code-zone" style="display:none"><label class="void-label">VOID CODE</label><textarea class="void-textarea" id="decVoidCode" placeholder="V01D://..."></textarea></div>
       <label class="void-label">PASSWORD</label>
       <input type="password" class="void-input" id="decPassword" placeholder="Enter the password...">
       <button class="void-btn" id="decodeBtn">REVEAL MESSAGE</button>
-      <div class="void-output" id="decOutput" style="display:none">
-        <div class="void-output-header">REVEALED MESSAGE</div>
-        <div class="void-revealed-msg" id="decResult"></div>
-        <div class="void-self-destruct" id="selfDestruct"></div>
-      </div>
+      <div class="void-output" id="decOutput" style="display:none"><div class="void-output-header">REVEALED MESSAGE</div><div class="void-revealed-msg" id="decResult"></div><div class="void-self-destruct" id="selfDestruct"></div></div>
       <div class="void-error" id="decError" style="display:none"></div>
     </div>
 
-    <!-- ── DECODE › AUDIO ── -->
-    <div class="void-panel void-method" id="dec-audio" style="display:none">
-      <div class="void-panel-header">
-        <span class="void-panel-title">DECODE</span>
-        <span class="void-panel-sub">extract from audio</span>
-      </div>
+    <div class="void-panel" id="dec-audio" style="display:none">
+      <div class="void-panel-header"><span class="void-panel-title">DECODE</span><span class="void-panel-sub">extract from audio</span></div>
       <label class="void-label">ENCODED WAV FILE</label>
-      <div class="void-drop-zone" id="audioDecDropZone">
-        <input type="file" accept="audio/wav" id="audioDecInput">
-        <div class="void-drop-icon">♫</div>
-        <div class="void-drop-text">drop the encoded WAV file</div>
-        <div class="void-drop-hint">must be the exact WAV from VOID</div>
-      </div>
-      <div id="audioDecPreview" style="display:none">
-        <audio controls id="audioDecPlayer" style="width:100%;margin-bottom:1rem;filter:invert(1) hue-rotate(180deg);"></audio>
-      </div>
+      <div class="void-drop-zone" id="audioDecDropZone"><input type="file" accept="audio/wav" id="audioDecInput"><div class="void-drop-icon">♫</div><div class="void-drop-text">drop the encoded WAV file</div><div class="void-drop-hint">must be the exact WAV from VOID</div></div>
+      <div id="audioDecPreview" style="display:none"><audio controls id="audioDecPlayer" style="width:100%;margin-bottom:1rem;filter:invert(1) hue-rotate(180deg);"></audio></div>
       <label class="void-label">PASSWORD</label>
       <input type="password" class="void-input" id="audioDecPassword" placeholder="Enter the password...">
       <button class="void-btn" id="audioDecodeBtn">🎵 EXTRACT MESSAGE</button>
-      <div class="void-output" id="audioDecOutput" style="display:none">
-        <div class="void-output-header">REVEALED MESSAGE</div>
-        <div class="void-revealed-msg" id="audioDecResult"></div>
-        <div class="void-self-destruct" id="audioSelfDestruct"></div>
-      </div>
+      <div class="void-output" id="audioDecOutput" style="display:none"><div class="void-output-header">REVEALED MESSAGE</div><div class="void-revealed-msg" id="audioDecResult"></div><div class="void-self-destruct" id="audioSelfDestruct"></div></div>
       <div class="void-error" id="audioDecError" style="display:none"></div>
     </div>
 
-    <!-- ── DECODE › DEAD DROP ── -->
-    <div class="void-panel void-method" id="dec-deaddrop" style="display:none">
-      <div class="void-panel-header">
-        <span class="void-panel-title">DECODE</span>
-        <span class="void-panel-sub">retrieve from dead drop</span>
-      </div>
-      <div class="void-info-box"><span class="void-info-icon">☠</span>Paste the DEAD DROP KEY. VOID fetches the public image and extracts the message automatically.</div>
+    <div class="void-panel" id="dec-deaddrop" style="display:none">
+      <div class="void-panel-header"><span class="void-panel-title">DECODE</span><span class="void-panel-sub">retrieve from dead drop</span></div>
+      <div class="void-info-box"><span class="void-info-icon">☠</span>Paste the DEAD DROP KEY. VOID fetches the image and extracts your message.</div>
       <label class="void-label">DEAD DROP KEY</label>
       <textarea class="void-textarea" id="ddKey" placeholder="VOID-DROP://..." style="min-height:80px;"></textarea>
-      <label class="void-label">OR UPLOAD ENCODED IMAGE DIRECTLY</label>
-      <div class="void-drop-zone-dec" id="ddReadDropZone">
-        <input type="file" accept="image/png,image/bmp" id="ddReadImageInput">
-        <div class="void-drop-icon">↓</div>
-        <div class="void-drop-text">drop encoded image (optional)</div>
-        <div class="void-drop-hint">use this if the public URL is unavailable</div>
-      </div>
+      <label class="void-label">OR UPLOAD ENCODED IMAGE</label>
+      <div class="void-drop-zone-dec" id="ddReadDropZone"><input type="file" accept="image/png,image/bmp" id="ddReadImageInput"><div class="void-drop-icon">↓</div><div class="void-drop-text">drop encoded image (optional)</div></div>
       <label class="void-label">PASSWORD</label>
       <input type="password" class="void-input" id="ddReadPassword" placeholder="Password...">
       <button class="void-btn" id="ddReadBtn">☠ RETRIEVE MESSAGE</button>
-      <div class="void-output" id="ddReadOutput" style="display:none">
-        <div class="void-output-header">RETRIEVED MESSAGE</div>
-        <div class="void-revealed-msg" id="ddReadResult"></div>
-        <div class="void-self-destruct" id="ddSelfDestruct"></div>
-      </div>
+      <div class="void-output" id="ddReadOutput" style="display:none"><div class="void-output-header">RETRIEVED MESSAGE</div><div class="void-revealed-msg" id="ddReadResult"></div><div class="void-self-destruct" id="ddSelfDestruct"></div></div>
       <div class="void-error" id="ddReadError" style="display:none"></div>
     </div>
 
-    <!-- ── DECODE › VISUAL KEY ── -->
-    <div class="void-panel void-method" id="dec-visualkey" style="display:none">
-      <div class="void-panel-header">
-        <span class="void-panel-title">DECODE</span>
-        <span class="void-panel-sub">unlock with image key</span>
-      </div>
+    <div class="void-panel" id="dec-visualkey" style="display:none">
+      <div class="void-panel-header"><span class="void-panel-title">DECODE</span><span class="void-panel-sub">unlock with image key</span></div>
       <label class="void-label">YOUR SECRET KEY IMAGE</label>
       <div class="void-img-picker">
-        <div class="void-drop-zone" id="vkDecKeyDropZone">
-          <input type="file" accept="image/*" id="vkDecKeyInput">
-          <div class="void-drop-icon">👁</div>
-          <div class="void-drop-text">drop your key image</div>
-          <div class="void-drop-hint">Must be the same image used to lock</div>
-        </div>
-        <div class="void-img-loaded" id="vkDecKeyLoaded">
-          <img class="void-img-loaded-img" id="vkDecKeyImg" src="" alt="">
-          <div class="void-img-actions"><button class="void-img-action-btn danger" id="vkDecKeyClearBtn">✕ CHANGE</button></div>
-          <div class="void-img-loaded-info">
-            <div class="void-img-loaded-meta">KEY IMAGE LOADED</div>
-            <div class="void-vk-fingerprint" id="vkDecFingerprint"></div>
-          </div>
-        </div>
+        <div class="void-drop-zone" id="vkDecKeyDropZone"><input type="file" accept="image/*" id="vkDecKeyInput"><div class="void-drop-icon">👁</div><div class="void-drop-text">drop your key image</div><div class="void-drop-hint">Same image used to lock</div></div>
+        <div class="void-img-loaded" id="vkDecKeyLoaded"><img class="void-img-loaded-img" id="vkDecKeyImg" src="" alt=""><div class="void-img-actions"><button class="void-img-action-btn danger" id="vkDecKeyClearBtn">✕ CHANGE</button></div><div class="void-img-loaded-info"><div class="void-img-loaded-meta">KEY LOADED</div><div class="void-vk-fingerprint" id="vkDecFingerprint"></div></div></div>
       </div>
       <label class="void-label" style="margin-top:.5rem">ENCODED IMAGE</label>
-      <div class="void-drop-zone-dec" id="vkDecImgDropZone">
-        <input type="file" accept="image/png,image/bmp" id="vkDecImgInput">
-        <div class="void-drop-icon">↓</div>
-        <div class="void-drop-text">drop the encoded image</div>
-      </div>
-      <div class="void-img-preview-dec" id="vkDecImgPreview">
-        <img id="vkDecPreviewImg" src="" alt="">
-      </div>
+      <div class="void-drop-zone-dec" id="vkDecImgDropZone"><input type="file" accept="image/png,image/bmp" id="vkDecImgInput"><div class="void-drop-icon">↓</div><div class="void-drop-text">drop the encoded image</div></div>
+      <div class="void-img-preview-dec" id="vkDecImgPreview"><img id="vkDecPreviewImg" src="" alt=""></div>
       <button class="void-btn" id="vkDecodeBtn">🔓 UNLOCK WITH IMAGE KEY</button>
-      <div class="void-output" id="vkDecOutput" style="display:none">
-        <div class="void-output-header">UNLOCKED MESSAGE</div>
-        <div class="void-revealed-msg" id="vkDecResult"></div>
-        <div class="void-self-destruct" id="vkSelfDestruct"></div>
-      </div>
+      <div class="void-output" id="vkDecOutput" style="display:none"><div class="void-output-header">UNLOCKED MESSAGE</div><div class="void-revealed-msg" id="vkDecResult"></div><div class="void-self-destruct" id="vkSelfDestruct"></div></div>
       <div class="void-error" id="vkDecError" style="display:none"></div>
     </div>
 
   </section>
 
-  <!-- ══ ABOUT ══ -->
+  <!-- ABOUT -->
   <section id="tab-about" class="void-section">
     <div class="void-panel void-about">
       <h2 class="void-about-title">HOW VOID WORKS</h2>
       <div id="aboutBlocks"></div>
       <div class="void-warning-box">
         <div class="void-warning-title">⚠ OPERATIONAL SECURITY</div>
-        <div class="void-warning-text">
-          — Send encoded images via Telegram or email attachment (no compression).<br>
-          — Never use WhatsApp — it compresses images and destroys hidden data.<br>
-          — For audio: send WAV files only — MP3 re-encoding destroys data.<br>
-          — Visual Key: store your key image safely — losing it = losing access.<br>
-          — Share passwords through a completely separate channel.
-        </div>
+        <div class="void-warning-text">— Send encoded images via Telegram or email (no compression).<br>— Never use WhatsApp — it compresses images.<br>— For audio: send WAV only — MP3 destroys data.<br>— Visual Key: store your key image safely.<br>— Share passwords through a separate channel.</div>
       </div>
       <a href="https://github.com/ahmed-joma/VOID" target="_blank" class="void-gh-link">VIEW SOURCE ON GITHUB →</a>
     </div>
   </section>
 
 </div>
-<script src="src/i18n.js?v=5"></script>
-<script src="src/crypto.js?v=5"></script>
-<script src="src/steg.js?v=5"></script>
-<script src="src/audio.js?v=5"></script>
-<script src="src/visualkey.js?v=5"></script>
-<script src="src/deaddrop.js?v=5"></script>
-<script src="src/app.js?v=5"></script>
+<script>
+/* VOID — i18n.js | Multi-language Support */
+
+const VoidI18n = (() => {
+
+  const langs = {
+
+    en: {
+      dir: 'ltr',
+      flag: 'EN',
+      tagline: 'NO TRACE · NO PROOF · NOTHING',
+      nav: { home: 'HOME', encode: 'ENCODE', decode: 'DECODE', about: 'ABOUT' },
+      hero: {
+        sub: 'hide anything inside anything.<br>zero server. zero logs. zero trace.',
+        cta: 'ENTER VOID →'
+      },
+      features: [
+        { title: 'AES-256 ENCRYPTION', desc: 'Military-grade encryption before hiding. Wrong password = nothing.' },
+        { title: 'LSB STEGANOGRAPHY', desc: 'Message hidden in pixel data. Image looks 100% identical.' },
+        { title: 'ZERO SERVER', desc: 'Everything runs in your browser. Nothing is sent anywhere. Ever.' },
+        { title: 'SELF-DESTRUCT', desc: 'Revealed messages auto-wipe after 30 seconds.' },
+        { title: 'VOID CODE MODE', desc: 'No image needed. Encrypt to a text string that looks like noise.' },
+        { title: 'DECOY MESSAGES', desc: 'Wrong password reveals a fake message. Plausible deniability.' }
+      ],
+      encode: {
+        title: 'ENCODE', sub: 'hide a message',
+        imageMode: '◎ IMAGE MODE', voidCode: '⬡ VOID CODE',
+        selectImage: 'SELECT CARRIER IMAGE',
+        dropText: 'drop PNG or BMP here',
+        dropHint: 'JPEG compresses and destroys hidden data — use PNG only',
+        textModeInfo: 'Your message will be encrypted and encoded as a VOID CODE string.<br>Send it as plain text — it looks like random noise to anyone else.',
+        message: 'SECRET MESSAGE', messagePh: 'Type your secret message here...',
+        password: 'PASSWORD', passwordPh: 'Strong password...',
+        decoy: 'DECOY MESSAGE', decoyOptional: '(optional)', decoyPh: 'Shown on wrong password...',
+        capacity: 'CAPACITY',
+        btn: 'ENCRYPT & HIDE', btnWorking: 'ENCRYPTING...',
+        outputImg: 'ENCODED IMAGE — DOWNLOAD & SEND',
+        outputCode: 'VOID CODE — COPY & SEND',
+        dlBtn: '↓ DOWNLOAD ENCODED IMAGE',
+        copyBtn: 'COPY CODE', copied: 'COPIED ✓',
+        sendHint: 'Send via Telegram or email attachment only.<br>WhatsApp compresses images and destroys the hidden data.',
+        codeHint: 'Send as plain text anywhere.<br>Looks like random noise to anyone without the password.',
+        errMsg: 'Write a message first.',
+        errPass: 'Set a password.',
+        errImg: 'Select a PNG image first.',
+        errFailed: 'Encryption failed.'
+      },
+      decode: {
+        title: 'DECODE', sub: 'reveal a message',
+        imageMode: '◎ IMAGE MODE', voidCode: '⬡ VOID CODE',
+        encodedImg: 'ENCODED IMAGE',
+        dropText: 'drop the encoded image',
+        dropHint: 'must be the exact file — do not compress or screenshot',
+        voidCodeLabel: 'VOID CODE', voidCodePh: 'V01D://... paste the code here',
+        password: 'PASSWORD', passwordPh: 'Enter the password...',
+        btn: 'REVEAL MESSAGE', btnWorking: 'EXTRACTING...',
+        outputHeader: 'REVEALED MESSAGE',
+        selfDestruct: 'SELF-DESTRUCT IN',
+        destroyed: '[ MESSAGE DESTROYED — VOID ]',
+        errPass: 'Enter the password.',
+        errImg: 'Load an encoded image first.',
+        errCode: 'Paste a VOID CODE first.',
+        errWrong: 'Wrong password or corrupted data.',
+        errFailed: 'Decryption failed.'
+      },
+      about: {
+        title: 'HOW VOID WORKS',
+        blocks: [
+          { num: '01', heading: 'AES-256-GCM ENCRYPTION', text: 'Your message is encrypted using AES-256-GCM, the same algorithm used by governments and militaries worldwide. The key is derived from your password using PBKDF2 with 100,000 iterations and a random salt. Without the exact password, decryption is computationally impossible.' },
+          { num: '02', heading: 'LSB STEGANOGRAPHY', text: 'The encrypted data is hidden in the Least Significant Bits of the image\'s pixel values. Each pixel stores 1 bit. Changing the last bit of a color value (e.g., 200 → 201) is invisible to the human eye but encodes your data perfectly.' },
+          { num: '03', heading: 'PLAUSIBLE DENIABILITY', text: 'Set a decoy message shown when someone enters a wrong password. If you\'re ever forced to reveal a password, give them the decoy one. They\'ll see an innocent message and have no way to prove another one exists.' },
+          { num: '04', heading: 'ZERO SERVER ARCHITECTURE', text: 'VOID runs entirely in your browser using the Web Crypto API. No data is ever sent to any server. No logs. No analytics. No tracking. The code is open source — verify it yourself.' }
+        ],
+        warningTitle: '⚠ OPERATIONAL SECURITY',
+        warningText: 'VOID is only as strong as your operational security.<br>— Send encoded images via Telegram or email attachment.<br>— Never use WhatsApp — it compresses images and destroys hidden data.<br>— Share your password through a completely separate channel.<br>— Use VOID CODE mode when you cannot send images.',
+        ghLink: 'VIEW SOURCE ON GITHUB →'
+      }
+    },
+
+    ar: {
+      dir: 'rtl',
+      flag: 'AR',
+      tagline: 'لا أثر · لا دليل · لا شيء',
+      nav: { home: 'الرئيسية', encode: 'تشفير', decode: 'فك تشفير', about: 'كيف يعمل' },
+      hero: {
+        sub: 'أخفِ أي شيء داخل أي شيء.<br>بلا سيرفر. بلا سجلات. بلا أثر.',
+        cta: 'ادخل VOID →'
+      },
+      features: [
+        { title: 'تشفير AES-256', desc: 'تشفير عسكري قبل الإخفاء. كلمة مرور خاطئة = لا شيء.' },
+        { title: 'إخفاء في البيكسلات', desc: 'الرسالة مخفية في بيانات الصورة. تبدو متطابقة 100%.' },
+        { title: 'بلا سيرفر', desc: 'كل شيء يعمل في متصفحك. لا شيء يُرسل لأي مكان.' },
+        { title: 'تدمير ذاتي', desc: 'الرسائل المكشوفة تُمحى تلقائياً بعد 30 ثانية.' },
+        { title: 'وضع VOID CODE', desc: 'لا تحتاج صورة. شفّر إلى نص يبدو عشوائياً.' },
+        { title: 'رسائل وهمية', desc: 'كلمة مرور خاطئة تُظهر رسالة مزيفة. إنكار معقول.' }
+      ],
+      encode: {
+        title: 'تشفير', sub: 'إخفاء رسالة',
+        imageMode: '◎ وضع الصورة', voidCode: '⬡ VOID CODE',
+        selectImage: 'اختر الصورة الحاملة',
+        dropText: 'اسحب PNG أو BMP هنا',
+        dropHint: 'JPEG يضغط الصورة ويدمر البيانات المخفية — استخدم PNG فقط',
+        textModeInfo: 'ستُشفَّر رسالتك وتتحول لكود VOID CODE.<br>أرسله كنص عادي — يبدو عشوائياً لأي شخص آخر.',
+        message: 'الرسالة السرية', messagePh: 'اكتب رسالتك السرية هنا...',
+        password: 'كلمة المرور', passwordPh: 'كلمة مرور قوية...',
+        decoy: 'رسالة وهمية', decoyOptional: '(اختياري)', decoyPh: 'تُعرض عند كلمة مرور خاطئة...',
+        capacity: 'السعة',
+        btn: 'تشفير وإخفاء', btnWorking: 'جاري التشفير...',
+        outputImg: 'الصورة المشفرة — حمّل وأرسل',
+        outputCode: 'VOID CODE — انسخ وأرسل',
+        dlBtn: '↓ تحميل الصورة المشفرة',
+        copyBtn: 'نسخ الكود', copied: 'تم النسخ ✓',
+        sendHint: 'أرسل عبر تيليغرام أو بريد إلكتروني فقط.<br>واتساب يضغط الصور ويدمر البيانات المخفية.',
+        codeHint: 'أرسله كنص عادي في أي مكان.<br>يبدو عشوائياً لأي شخص لا يملك كلمة المرور.',
+        errMsg: 'اكتب رسالة أولاً.',
+        errPass: 'ضع كلمة مرور.',
+        errImg: 'اختر صورة PNG أولاً.',
+        errFailed: 'فشل التشفير.'
+      },
+      decode: {
+        title: 'فك التشفير', sub: 'كشف الرسالة',
+        imageMode: '◎ وضع الصورة', voidCode: '⬡ VOID CODE',
+        encodedImg: 'الصورة المشفرة',
+        dropText: 'اسحب الصورة المشفرة هنا',
+        dropHint: 'يجب أن يكون نفس الملف — لا تضغطه أو تصوّره',
+        voidCodeLabel: 'VOID CODE', voidCodePh: 'V01D://... الصق الكود هنا',
+        password: 'كلمة المرور', passwordPh: 'ادخل كلمة المرور...',
+        btn: 'كشف الرسالة', btnWorking: 'جاري الاستخراج...',
+        outputHeader: 'الرسالة المكشوفة',
+        selfDestruct: 'تدمير ذاتي خلال',
+        destroyed: '[ تم مسح الرسالة — VOID ]',
+        errPass: 'ادخل كلمة المرور.',
+        errImg: 'حمّل الصورة المشفرة أولاً.',
+        errCode: 'الصق VOID CODE أولاً.',
+        errWrong: 'كلمة مرور خاطئة أو بيانات تالفة.',
+        errFailed: 'فشل فك التشفير.'
+      },
+      about: {
+        title: 'كيف يعمل VOID',
+        blocks: [
+          { num: '01', heading: 'تشفير AES-256-GCM', text: 'رسالتك تُشفَّر باستخدام AES-256-GCM، نفس الخوارزمية التي تستخدمها الحكومات والجيوش حول العالم. المفتاح مشتق من كلمة مرورك باستخدام PBKDF2 مع 100,000 تكرار ورمل عشوائي. بدون كلمة المرور الصحيحة، فك التشفير مستحيل حسابياً.' },
+          { num: '02', heading: 'إخفاء LSB في البيكسلات', text: 'البيانات المشفرة مخفية في آخر بت من قيم البيكسلات في الصورة. كل بيكسل يخزن بتاً واحداً. تغيير آخر بت في قيمة لون (مثل 200 إلى 201) لا يُرى بالعين البشرية لكنه يُشفّر بياناتك بشكل مثالي.' },
+          { num: '03', heading: 'الإنكار المعقول', text: 'ضع رسالة وهمية تظهر عند إدخال كلمة مرور خاطئة. إذا أُجبرت على كشف كلمة المرور، أعطهم كلمة المرور الوهمية. سيرون رسالة بريئة ولا طريقة لإثبات وجود رسالة أخرى.' },
+          { num: '04', heading: 'بنية بلا سيرفر', text: 'VOID يعمل بالكامل في متصفحك باستخدام Web Crypto API. لا بيانات تُرسل لأي سيرفر. لا سجلات. لا تحليلات. لا تتبع. الكود مفتوح المصدر — تحقق منه بنفسك.' }
+        ],
+        warningTitle: '⚠ الأمان التشغيلي',
+        warningText: 'VOID لا يتجاوز قوته قوة أمانك التشغيلي.<br>— أرسل الصور المشفرة عبر تيليغرام أو بريد إلكتروني.<br>— لا تستخدم واتساب — يضغط الصور ويدمر البيانات.<br>— شارك كلمة المرور عبر قناة منفصلة تماماً.<br>— استخدم وضع VOID CODE عندما لا تستطيع إرسال صور.',
+        ghLink: 'عرض الكود على GitHub →'
+      }
+    },
+
+    fr: {
+      dir: 'ltr',
+      flag: 'FR',
+      tagline: 'AUCUNE TRACE · AUCUNE PREUVE · RIEN',
+      nav: { home: 'ACCUEIL', encode: 'CACHER', decode: 'RÉVÉLER', about: 'À PROPOS' },
+      hero: {
+        sub: 'cachez tout dans n\'importe quoi.<br>zéro serveur. zéro journal. zéro trace.',
+        cta: 'ENTRER VOID →'
+      },
+      features: [
+        { title: 'CHIFFREMENT AES-256', desc: 'Chiffrement militaire avant dissimulation. Mauvais mot de passe = rien.' },
+        { title: 'STÉGANOGRAPHIE LSB', desc: 'Message caché dans les données de pixels. Image 100% identique.' },
+        { title: 'ZÉRO SERVEUR', desc: 'Tout fonctionne dans votre navigateur. Rien n\'est envoyé nulle part.' },
+        { title: 'AUTO-DESTRUCTION', desc: 'Les messages révélés s\'effacent automatiquement après 30 secondes.' },
+        { title: 'MODE VOID CODE', desc: 'Pas d\'image nécessaire. Chiffrez en une chaîne de texte aléatoire.' },
+        { title: 'MESSAGES LEURRES', desc: 'Mauvais mot de passe révèle un faux message. Déni plausible.' }
+      ],
+      encode: {
+        title: 'CACHER', sub: 'dissimuler un message',
+        imageMode: '◎ MODE IMAGE', voidCode: '⬡ VOID CODE',
+        selectImage: 'SÉLECTIONNER IMAGE',
+        dropText: 'déposez PNG ou BMP ici',
+        dropHint: 'JPEG compresse et détruit les données cachées — PNG uniquement',
+        textModeInfo: 'Votre message sera chiffré et encodé comme VOID CODE.<br>Envoyez-le en texte brut — ressemble à du bruit aléatoire.',
+        message: 'MESSAGE SECRET', messagePh: 'Tapez votre message secret ici...',
+        password: 'MOT DE PASSE', passwordPh: 'Mot de passe fort...',
+        decoy: 'MESSAGE LEURRE', decoyOptional: '(optionnel)', decoyPh: 'Affiché avec mauvais mot de passe...',
+        capacity: 'CAPACITÉ',
+        btn: 'CHIFFRER & CACHER', btnWorking: 'CHIFFREMENT...',
+        outputImg: 'IMAGE ENCODÉE — TÉLÉCHARGER & ENVOYER',
+        outputCode: 'VOID CODE — COPIER & ENVOYER',
+        dlBtn: '↓ TÉLÉCHARGER IMAGE ENCODÉE',
+        copyBtn: 'COPIER CODE', copied: 'COPIÉ ✓',
+        sendHint: 'Envoyez via Telegram ou pièce jointe email.<br>WhatsApp compresse les images et détruit les données cachées.',
+        codeHint: 'Envoyez en texte brut n\'importe où.<br>Ressemble à du bruit aléatoire sans le mot de passe.',
+        errMsg: 'Écrivez un message d\'abord.',
+        errPass: 'Définissez un mot de passe.',
+        errImg: 'Sélectionnez une image PNG d\'abord.',
+        errFailed: 'Échec du chiffrement.'
+      },
+      decode: {
+        title: 'RÉVÉLER', sub: 'révéler un message',
+        imageMode: '◎ MODE IMAGE', voidCode: '⬡ VOID CODE',
+        encodedImg: 'IMAGE ENCODÉE',
+        dropText: 'déposez l\'image encodée',
+        dropHint: 'doit être le fichier exact — ne pas compresser',
+        voidCodeLabel: 'VOID CODE', voidCodePh: 'V01D://... collez le code ici',
+        password: 'MOT DE PASSE', passwordPh: 'Entrez le mot de passe...',
+        btn: 'RÉVÉLER MESSAGE', btnWorking: 'EXTRACTION...',
+        outputHeader: 'MESSAGE RÉVÉLÉ',
+        selfDestruct: 'AUTO-DESTRUCTION DANS',
+        destroyed: '[ MESSAGE DÉTRUIT — VOID ]',
+        errPass: 'Entrez le mot de passe.',
+        errImg: 'Chargez une image encodée d\'abord.',
+        errCode: 'Collez un VOID CODE d\'abord.',
+        errWrong: 'Mauvais mot de passe ou données corrompues.',
+        errFailed: 'Échec du déchiffrement.'
+      },
+      about: {
+        title: 'COMMENT VOID FONCTIONNE',
+        blocks: [
+          { num: '01', heading: 'CHIFFREMENT AES-256-GCM', text: 'Votre message est chiffré avec AES-256-GCM, le même algorithme utilisé par les gouvernements et armées du monde entier. La clé est dérivée de votre mot de passe via PBKDF2 avec 100 000 itérations et un sel aléatoire.' },
+          { num: '02', heading: 'STÉGANOGRAPHIE LSB', text: 'Les données chiffrées sont cachées dans les Bits de Poids Faible des valeurs de pixels. Chaque pixel stocke 1 bit. Changer le dernier bit (ex: 200 → 201) est invisible à l\'œil humain.' },
+          { num: '03', heading: 'DÉNI PLAUSIBLE', text: 'Définissez un message leurre affiché avec un mauvais mot de passe. Si vous êtes forcé de révéler un mot de passe, donnez le mot de passe leurre. Ils verront un message innocent.' },
+          { num: '04', heading: 'ARCHITECTURE ZÉRO SERVEUR', text: 'VOID fonctionne entièrement dans votre navigateur via Web Crypto API. Aucune donnée n\'est envoyée à un serveur. Pas de journaux. Pas d\'analyse. Code source ouvert.' }
+        ],
+        warningTitle: '⚠ SÉCURITÉ OPÉRATIONNELLE',
+        warningText: 'VOID est seulement aussi fort que votre sécurité opérationnelle.<br>— Envoyez via Telegram ou pièce jointe email.<br>— Jamais WhatsApp — compresse les images.<br>— Partagez le mot de passe via un canal séparé.<br>— Utilisez VOID CODE si vous ne pouvez pas envoyer d\'images.',
+        ghLink: 'VOIR SOURCE SUR GITHUB →'
+      }
+    },
+
+    de: {
+      dir: 'ltr',
+      flag: 'DE',
+      tagline: 'KEINE SPUR · KEIN BEWEIS · NICHTS',
+      nav: { home: 'START', encode: 'VERSTECKEN', decode: 'ENTHÜLLEN', about: 'ÜBER' },
+      hero: {
+        sub: 'verstecke alles in allem.<br>kein server. keine logs. keine spur.',
+        cta: 'VOID BETRETEN →'
+      },
+      features: [
+        { title: 'AES-256 VERSCHLÜSSELUNG', desc: 'Militärverschlüsselung vor dem Verstecken. Falsches Passwort = nichts.' },
+        { title: 'LSB STEGANOGRAPHIE', desc: 'Nachricht in Pixeldaten versteckt. Bild sieht 100% identisch aus.' },
+        { title: 'KEIN SERVER', desc: 'Alles läuft in Ihrem Browser. Nichts wird gesendet.' },
+        { title: 'SELBSTZERSTÖRUNG', desc: 'Enthüllte Nachrichten werden nach 30 Sekunden gelöscht.' },
+        { title: 'VOID CODE MODUS', desc: 'Kein Bild benötigt. Als zufällig aussehenden Text verschlüsseln.' },
+        { title: 'KÖDER-NACHRICHTEN', desc: 'Falsches Passwort zeigt eine gefälschte Nachricht.' }
+      ],
+      encode: {
+        title: 'VERSTECKEN', sub: 'Nachricht verbergen',
+        imageMode: '◎ BILDMODUS', voidCode: '⬡ VOID CODE',
+        selectImage: 'TRÄGERBILD WÄHLEN',
+        dropText: 'PNG oder BMP hier ablegen',
+        dropHint: 'JPEG komprimiert und zerstört versteckte Daten — nur PNG verwenden',
+        textModeInfo: 'Ihre Nachricht wird als VOID CODE verschlüsselt.<br>Als Klartext senden — sieht wie zufälliges Rauschen aus.',
+        message: 'GEHEIME NACHRICHT', messagePh: 'Geheime Nachricht hier eingeben...',
+        password: 'PASSWORT', passwordPh: 'Starkes Passwort...',
+        decoy: 'KÖDER-NACHRICHT', decoyOptional: '(optional)', decoyPh: 'Bei falschem Passwort angezeigt...',
+        capacity: 'KAPAZITÄT',
+        btn: 'VERSCHLÜSSELN & VERSTECKEN', btnWorking: 'VERSCHLÜSSELN...',
+        outputImg: 'KODIERTES BILD — HERUNTERLADEN & SENDEN',
+        outputCode: 'VOID CODE — KOPIEREN & SENDEN',
+        dlBtn: '↓ KODIERTES BILD HERUNTERLADEN',
+        copyBtn: 'CODE KOPIEREN', copied: 'KOPIERT ✓',
+        sendHint: 'Via Telegram oder E-Mail-Anhang senden.<br>WhatsApp komprimiert Bilder und zerstört versteckte Daten.',
+        codeHint: 'Als Klartext überall senden.<br>Sieht ohne Passwort wie Rauschen aus.',
+        errMsg: 'Zuerst Nachricht schreiben.',
+        errPass: 'Passwort festlegen.',
+        errImg: 'Zuerst PNG-Bild auswählen.',
+        errFailed: 'Verschlüsselung fehlgeschlagen.'
+      },
+      decode: {
+        title: 'ENTHÜLLEN', sub: 'Nachricht enthüllen',
+        imageMode: '◎ BILDMODUS', voidCode: '⬡ VOID CODE',
+        encodedImg: 'KODIERTES BILD',
+        dropText: 'kodiertes Bild ablegen',
+        dropHint: 'muss die genaue Datei sein — nicht komprimieren',
+        voidCodeLabel: 'VOID CODE', voidCodePh: 'V01D://... Code hier einfügen',
+        password: 'PASSWORT', passwordPh: 'Passwort eingeben...',
+        btn: 'NACHRICHT ENTHÜLLEN', btnWorking: 'EXTRAHIEREN...',
+        outputHeader: 'ENTHÜLLTE NACHRICHT',
+        selfDestruct: 'SELBSTZERSTÖRUNG IN',
+        destroyed: '[ NACHRICHT VERNICHTET — VOID ]',
+        errPass: 'Passwort eingeben.',
+        errImg: 'Zuerst kodiertes Bild laden.',
+        errCode: 'Zuerst VOID CODE einfügen.',
+        errWrong: 'Falsches Passwort oder beschädigte Daten.',
+        errFailed: 'Entschlüsselung fehlgeschlagen.'
+      },
+      about: {
+        title: 'WIE VOID FUNKTIONIERT',
+        blocks: [
+          { num: '01', heading: 'AES-256-GCM VERSCHLÜSSELUNG', text: 'Ihre Nachricht wird mit AES-256-GCM verschlüsselt, demselben Algorithmus, der von Regierungen und Militärs weltweit verwendet wird. Der Schlüssel wird über PBKDF2 mit 100.000 Iterationen abgeleitet.' },
+          { num: '02', heading: 'LSB STEGANOGRAPHIE', text: 'Die verschlüsselten Daten werden in den niedrigstwertigen Bits der Pixelwerte versteckt. Jedes Pixel speichert 1 Bit. Die Änderung ist für das menschliche Auge unsichtbar.' },
+          { num: '03', heading: 'PLAUSIBLE BESTREITBARKEIT', text: 'Legen Sie eine Köder-Nachricht fest, die bei falschem Passwort angezeigt wird. Wenn Sie gezwungen werden, ein Passwort preiszugeben, geben Sie das Köder-Passwort an.' },
+          { num: '04', heading: 'ZERO-SERVER ARCHITEKTUR', text: 'VOID läuft vollständig in Ihrem Browser über die Web Crypto API. Keine Daten werden an einen Server gesendet. Keine Logs. Open Source.' }
+        ],
+        warningTitle: '⚠ OPERATIVE SICHERHEIT',
+        warningText: 'VOID ist nur so stark wie Ihre operative Sicherheit.<br>— Bilder via Telegram oder E-Mail senden.<br>— Niemals WhatsApp — komprimiert Bilder.<br>— Passwort über separaten Kanal teilen.<br>— VOID CODE verwenden, wenn keine Bilder gesendet werden können.',
+        ghLink: 'QUELLCODE AUF GITHUB ANSEHEN →'
+      }
+    },
+
+    it: {
+      dir: 'ltr',
+      flag: 'IT',
+      tagline: 'NESSUNA TRACCIA · NESSUNA PROVA · NIENTE',
+      nav: { home: 'HOME', encode: 'NASCONDERE', decode: 'RIVELARE', about: 'INFO' },
+      hero: {
+        sub: 'nascondi qualsiasi cosa in qualsiasi cosa.<br>zero server. zero log. zero tracce.',
+        cta: 'ENTRA IN VOID →'
+      },
+      features: [
+        { title: 'CRITTOGRAFIA AES-256', desc: 'Crittografia militare prima di nascondere. Password errata = niente.' },
+        { title: 'STEGANOGRAFIA LSB', desc: 'Messaggio nascosto nei dati dei pixel. Immagine 100% identica.' },
+        { title: 'ZERO SERVER', desc: 'Tutto funziona nel tuo browser. Niente viene inviato da nessuna parte.' },
+        { title: 'AUTODISTRUZIONE', desc: 'I messaggi rivelati si cancellano automaticamente dopo 30 secondi.' },
+        { title: 'MODALITÀ VOID CODE', desc: 'Nessuna immagine necessaria. Cifra in una stringa di testo casuale.' },
+        { title: 'MESSAGGI ESCA', desc: 'Password errata rivela un messaggio falso. Negabilità plausibile.' }
+      ],
+      encode: {
+        title: 'NASCONDERE', sub: 'nascondere un messaggio',
+        imageMode: '◎ MODALITÀ IMMAGINE', voidCode: '⬡ VOID CODE',
+        selectImage: 'SELEZIONA IMMAGINE',
+        dropText: 'trascina PNG o BMP qui',
+        dropHint: 'JPEG comprime e distrugge i dati nascosti — usa solo PNG',
+        textModeInfo: 'Il tuo messaggio sarà cifrato come VOID CODE.<br>Invialo come testo normale — sembra rumore casuale.',
+        message: 'MESSAGGIO SEGRETO', messagePh: 'Scrivi il tuo messaggio segreto qui...',
+        password: 'PASSWORD', passwordPh: 'Password forte...',
+        decoy: 'MESSAGGIO ESCA', decoyOptional: '(opzionale)', decoyPh: 'Mostrato con password errata...',
+        capacity: 'CAPACITÀ',
+        btn: 'CIFRA E NASCONDI', btnWorking: 'CIFRATURA...',
+        outputImg: 'IMMAGINE CODIFICATA — SCARICA E INVIA',
+        outputCode: 'VOID CODE — COPIA E INVIA',
+        dlBtn: '↓ SCARICA IMMAGINE CODIFICATA',
+        copyBtn: 'COPIA CODICE', copied: 'COPIATO ✓',
+        sendHint: 'Invia via Telegram o allegato email.<br>WhatsApp comprime le immagini e distrugge i dati nascosti.',
+        codeHint: 'Invia come testo normale ovunque.<br>Sembra rumore casuale senza la password.',
+        errMsg: 'Scrivi prima un messaggio.',
+        errPass: 'Imposta una password.',
+        errImg: 'Seleziona prima un\'immagine PNG.',
+        errFailed: 'Cifratura fallita.'
+      },
+      decode: {
+        title: 'RIVELARE', sub: 'rivelare un messaggio',
+        imageMode: '◎ MODALITÀ IMMAGINE', voidCode: '⬡ VOID CODE',
+        encodedImg: 'IMMAGINE CODIFICATA',
+        dropText: 'trascina l\'immagine codificata',
+        dropHint: 'deve essere il file esatto — non comprimere',
+        voidCodeLabel: 'VOID CODE', voidCodePh: 'V01D://... incolla il codice qui',
+        password: 'PASSWORD', passwordPh: 'Inserisci la password...',
+        btn: 'RIVELA MESSAGGIO', btnWorking: 'ESTRAZIONE...',
+        outputHeader: 'MESSAGGIO RIVELATO',
+        selfDestruct: 'AUTODISTRUZIONE TRA',
+        destroyed: '[ MESSAGGIO DISTRUTTO — VOID ]',
+        errPass: 'Inserisci la password.',
+        errImg: 'Carica prima un\'immagine codificata.',
+        errCode: 'Incolla prima un VOID CODE.',
+        errWrong: 'Password errata o dati corrotti.',
+        errFailed: 'Decifratura fallita.'
+      },
+      about: {
+        title: 'COME FUNZIONA VOID',
+        blocks: [
+          { num: '01', heading: 'CRITTOGRAFIA AES-256-GCM', text: 'Il tuo messaggio è cifrato con AES-256-GCM, lo stesso algoritmo usato da governi ed eserciti in tutto il mondo. La chiave è derivata dalla tua password tramite PBKDF2 con 100.000 iterazioni.' },
+          { num: '02', heading: 'STEGANOGRAFIA LSB', text: 'I dati cifrati sono nascosti nei Bit Meno Significativi dei valori dei pixel. Ogni pixel memorizza 1 bit. Cambiare l\'ultimo bit è invisibile all\'occhio umano.' },
+          { num: '03', heading: 'NEGABILITÀ PLAUSIBILE', text: 'Imposta un messaggio esca mostrato con una password errata. Se sei costretto a rivelare una password, dai quella esca. Vedranno un messaggio innocente.' },
+          { num: '04', heading: 'ARCHITETTURA ZERO SERVER', text: 'VOID funziona interamente nel browser tramite Web Crypto API. Nessun dato viene inviato a server. Nessun log. Nessun tracciamento. Codice open source.' }
+        ],
+        warningTitle: '⚠ SICUREZZA OPERATIVA',
+        warningText: 'VOID è forte quanto la tua sicurezza operativa.<br>— Invia immagini via Telegram o allegato email.<br>— Mai WhatsApp — comprime le immagini.<br>— Condividi la password tramite canale separato.<br>— Usa VOID CODE quando non puoi inviare immagini.',
+        ghLink: 'VEDI SORGENTE SU GITHUB →'
+      }
+    }
+
+  };
+
+  let current = 'en';
+
+  function get(path) {
+    const t = langs[current];
+    return path.split('.').reduce((obj, k) => obj?.[k], t) ?? path;
+  }
+
+  function setLang(lang) {
+    if (!langs[lang]) return;
+    current = lang;
+    document.documentElement.dir = langs[lang].dir;
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      const val = get(key);
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = val;
+      } else {
+        el.innerHTML = val;
+      }
+    });
+    document.querySelectorAll('.void-lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+  }
+
+  function getLangs() { return Object.keys(langs); }
+  function getLangFlag(lang) { return langs[lang]?.flag || lang.toUpperCase(); }
+  function getCurrent() { return current; }
+
+  return { get, setLang, getLangs, getLangFlag, getCurrent, langs };
+
+})();
+
+</script>
+<script>
+/* VOID — crypto.js | AES-256-GCM via Web Crypto API */
+
+const VoidCrypto = (() => {
+
+  const enc = new TextEncoder();
+  const dec = new TextDecoder();
+
+  async function deriveKey(password, salt) {
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+      keyMaterial,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['encrypt', 'decrypt']
+    );
+  }
+
+  async function encrypt(plaintext, password) {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv   = crypto.getRandomValues(new Uint8Array(12));
+    const key  = await deriveKey(password, salt);
+    const ct   = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, enc.encode(plaintext));
+    const out  = new Uint8Array(16 + 12 + ct.byteLength);
+    out.set(salt, 0);
+    out.set(iv, 16);
+    out.set(new Uint8Array(ct), 28);
+    return btoa(String.fromCharCode(...out));
+  }
+
+  async function decrypt(b64, password) {
+    const raw  = new Uint8Array(atob(b64).split('').map(c => c.charCodeAt(0)));
+    const salt = raw.slice(0, 16);
+    const iv   = raw.slice(16, 28);
+    const ct   = raw.slice(28);
+    const key  = await deriveKey(password, salt);
+    const pt   = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ct);
+    return dec.decode(pt);
+  }
+
+  /* Pack real + decoy into one payload:
+     [1 byte: real_len_high][1 byte: real_len_low][real_bytes][decoy_bytes]
+     Both slots always encrypted with separate keys so they look identical.
+  */
+  async function encryptWithDecoy(realMsg, password, decoyMsg) {
+    const realEnc  = await encrypt(realMsg, password);
+    const decoyEnc = decoyMsg
+      ? await encrypt(decoyMsg, '__D3C0Y__' + password)
+      : await encrypt('', '__D3C0Y__' + password);
+
+    const payload = JSON.stringify({ r: realEnc, d: decoyEnc });
+    return btoa(unescape(encodeURIComponent(payload)));
+  }
+
+  async function decryptWithDecoy(b64payload, password, isDecoy = false) {
+    try {
+      const payload = JSON.parse(decodeURIComponent(escape(atob(b64payload))));
+      if (isDecoy) {
+        return await decrypt(payload.d, '__D3C0Y__' + password);
+      }
+      return await decrypt(payload.r, password);
+    } catch {
+      /* fallback: plain encrypted (no decoy) */
+      return await decrypt(b64payload, password);
+    }
+  }
+
+  return { encrypt, decrypt, encryptWithDecoy, decryptWithDecoy };
+
+})();
+
+</script>
+<script>
+/* VOID — steg.js | LSB Steganography Engine */
+
+const VoidSteg = (() => {
+
+  /* Convert string → binary bit string */
+  function strToBits(str) {
+    const bytes = new TextEncoder().encode(str);
+    const lenBytes = new Uint8Array(4);
+    new DataView(lenBytes.buffer).setUint32(0, bytes.length, false);
+    let bits = '';
+    for (const b of lenBytes) for (let i = 7; i >= 0; i--) bits += (b >> i) & 1;
+    for (const b of bytes)   for (let i = 7; i >= 0; i--) bits += (b >> i) & 1;
+    return bits;
+  }
+
+  /* Extract bit string → original string */
+  function bitsToStr(bits) {
+    let len = 0;
+    for (let i = 0; i < 32; i++) len = (len << 1) | parseInt(bits[i]);
+    if (len <= 0 || len > 10_000_000) throw new Error('Invalid data');
+    const msgBits = bits.slice(32, 32 + len * 8);
+    if (msgBits.length < len * 8) throw new Error('Incomplete data');
+    const bytes = [];
+    for (let i = 0; i < len; i++) {
+      let b = 0;
+      for (let j = 0; j < 8; j++) b = (b << 1) | parseInt(msgBits[i * 8 + j]);
+      bytes.push(b);
+    }
+    return new TextDecoder().decode(new Uint8Array(bytes));
+  }
+
+  /* Max chars a PNG image can store */
+  function capacity(width, height) {
+    const totalBits = width * height * 3; /* R,G,B channels, 1 bit each */
+    return Math.floor((totalBits - 32) / 8); /* minus 4-byte length header */
+  }
+
+  /* Hide message inside image → returns new PNG data URL */
+  function hide(imageDataUrl, message) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width  = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const pixels  = imgData.data; /* RGBA flat array */
+
+        const bits = strToBits(message);
+        const cap  = capacity(canvas.width, canvas.height);
+
+        if (bits.length > cap * 8 + 32) {
+          return reject(new Error(`Image too small. Max ~${cap} chars for this image.`));
+        }
+
+        /* Embed bits into R,G,B channels (skip Alpha) */
+        let bitIdx = 0;
+        for (let px = 0; px < pixels.length && bitIdx < bits.length; px++) {
+          if ((px % 4) === 3) continue; /* skip alpha */
+          pixels[px] = (pixels[px] & 0xFE) | parseInt(bits[bitIdx++]);
+        }
+
+        ctx.putImageData(imgData, 0, 0);
+        resolve(canvas.toDataURL('image/png'));
+      };
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = imageDataUrl;
+    });
+  }
+
+  /* Extract hidden message from image */
+  function extract(imageDataUrl) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width  = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+        /* Read first 32 bits to get message length */
+        let lenBits = '';
+        let pixelIdx = 0;
+        while (lenBits.length < 32 && pixelIdx < pixels.length) {
+          if ((pixelIdx % 4) !== 3) lenBits += (pixels[pixelIdx] & 1).toString();
+          pixelIdx++;
+        }
+
+        let msgLen = 0;
+        for (let i = 0; i < 32; i++) msgLen = (msgLen << 1) | parseInt(lenBits[i]);
+
+        if (msgLen <= 0 || msgLen > 10_000_000) {
+          return reject(new Error('No VOID data found in this image.'));
+        }
+
+        /* Read message bits */
+        let msgBits = '';
+        const totalNeeded = msgLen * 8;
+        while (msgBits.length < totalNeeded && pixelIdx < pixels.length) {
+          if ((pixelIdx % 4) !== 3) msgBits += (pixels[pixelIdx] & 1).toString();
+          pixelIdx++;
+        }
+
+        try {
+          resolve(bitsToStr(lenBits + msgBits));
+        } catch (e) {
+          reject(new Error('No VOID data found in this image.'));
+        }
+      };
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = imageDataUrl;
+    });
+  }
+
+  /* Get capacity info for a loaded image */
+  function getCapacity(imageDataUrl) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve({
+        chars: capacity(img.naturalWidth, img.naturalHeight),
+        width: img.naturalWidth,
+        height: img.naturalHeight,
+        pixels: img.naturalWidth * img.naturalHeight
+      });
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = imageDataUrl;
+    });
+  }
+
+  return { hide, extract, getCapacity, capacity };
+
+})();
+
+</script>
+<script>
+/* VOID — audio.js | Audio Steganography via LSB in WAV samples */
+
+const VoidAudio = (() => {
+
+  /* Encode message bits into WAV audio samples (LSB of each sample) */
+  async function hide(audioFile, message) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const arrayBuffer = e.target.result;
+          const audioBuffer = await ctx.decodeAudioData(arrayBuffer.slice(0));
+
+          const sampleRate = audioBuffer.sampleRate;
+          const numChannels = audioBuffer.numberOfChannels;
+          const frameCount = audioBuffer.length;
+
+          /* Convert message to bits */
+          const enc = new TextEncoder();
+          const msgBytes = enc.encode(message);
+          const lenBytes = new Uint8Array(4);
+          new DataView(lenBytes.buffer).setUint32(0, msgBytes.length, false);
+          let bits = '';
+          for (const b of lenBytes) for (let i = 7; i >= 0; i--) bits += (b >> i) & 1;
+          for (const b of msgBytes) for (let i = 7; i >= 0; i--) bits += (b >> i) & 1;
+
+          if (bits.length > frameCount * 0.8) {
+            return reject(new Error(`Audio too short. Need ~${Math.ceil(bits.length/8)} more samples.`));
+          }
+
+          /* Create output buffer */
+          const offlineCtx = new OfflineAudioContext(numChannels, frameCount, sampleRate);
+          const outBuffer = offlineCtx.createBuffer(numChannels, frameCount, sampleRate);
+
+          /* Copy channel 0 and embed bits */
+          for (let ch = 0; ch < numChannels; ch++) {
+            const inData = audioBuffer.getChannelData(ch);
+            const outData = outBuffer.getChannelData(ch);
+            for (let i = 0; i < frameCount; i++) {
+              if (ch === 0 && i < bits.length) {
+                /* Quantize to 16-bit, flip LSB, re-normalize */
+                let sample = Math.max(-1, Math.min(1, inData[i]));
+                let int16 = Math.round(sample * 32767);
+                int16 = (int16 & 0xFFFE) | parseInt(bits[i]);
+                outData[i] = int16 / 32767;
+              } else {
+                outData[i] = inData[i];
+              }
+            }
+          }
+
+          /* Render to WAV */
+          const wavBlob = audioBufferToWav(outBuffer);
+          resolve(URL.createObjectURL(wavBlob));
+        } catch(err) {
+          reject(new Error('Failed to process audio: ' + err.message));
+        }
+      };
+      reader.onerror = () => reject(new Error('Failed to read audio file'));
+      reader.readAsArrayBuffer(audioFile);
+    });
+  }
+
+  async function extract(audioFile) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const audioBuffer = await ctx.decodeAudioData(e.target.result);
+          const data = audioBuffer.getChannelData(0);
+          const frameCount = audioBuffer.length;
+
+          /* Read 32 bits for length */
+          let lenBits = '';
+          for (let i = 0; i < 32 && i < frameCount; i++) {
+            let int16 = Math.round(Math.max(-1, Math.min(1, data[i])) * 32767);
+            lenBits += (int16 & 1).toString();
+          }
+          let msgLen = 0;
+          for (let i = 0; i < 32; i++) msgLen = (msgLen << 1) | parseInt(lenBits[i]);
+
+          if (msgLen <= 0 || msgLen > 5_000_000) return reject(new Error('No VOID data found in this audio.'));
+
+          let msgBits = '';
+          const needed = msgLen * 8;
+          for (let i = 32; i < 32 + needed && i < frameCount; i++) {
+            let int16 = Math.round(Math.max(-1, Math.min(1, data[i])) * 32767);
+            msgBits += (int16 & 1).toString();
+          }
+
+          const bytes = [];
+          for (let i = 0; i < msgLen; i++) {
+            let b = 0;
+            for (let j = 0; j < 8; j++) b = (b << 1) | parseInt(msgBits[i*8+j]);
+            bytes.push(b);
+          }
+          resolve(new TextDecoder().decode(new Uint8Array(bytes)));
+        } catch(err) {
+          reject(new Error('No VOID data found in this audio.'));
+        }
+      };
+      reader.onerror = () => reject(new Error('Failed to read audio file'));
+      reader.readAsArrayBuffer(audioFile);
+    });
+  }
+
+  /* Convert AudioBuffer to WAV Blob */
+  function audioBufferToWav(buffer) {
+    const numChannels = buffer.numberOfChannels;
+    const sampleRate = buffer.sampleRate;
+    const format = 1; // PCM
+    const bitDepth = 16;
+    const blockAlign = numChannels * bitDepth / 8;
+    const byteRate = sampleRate * blockAlign;
+    const dataLength = buffer.length * blockAlign;
+    const wavBuffer = new ArrayBuffer(44 + dataLength);
+    const view = new DataView(wavBuffer);
+
+    function writeStr(offset, str) {
+      for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+    }
+
+    writeStr(0, 'RIFF');
+    view.setUint32(4, 36 + dataLength, true);
+    writeStr(8, 'WAVE');
+    writeStr(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, format, true);
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, byteRate, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, bitDepth, true);
+    writeStr(36, 'data');
+    view.setUint32(40, dataLength, true);
+
+    let offset = 44;
+    for (let i = 0; i < buffer.length; i++) {
+      for (let ch = 0; ch < numChannels; ch++) {
+        const sample = Math.max(-1, Math.min(1, buffer.getChannelData(ch)[i]));
+        view.setInt16(offset, Math.round(sample * 32767), true);
+        offset += 2;
+      }
+    }
+
+    return new Blob([wavBuffer], { type: 'audio/wav' });
+  }
+
+  function getCapacity(audioFile) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const buf = await ctx.decodeAudioData(e.target.result);
+          resolve({
+            samples: buf.length,
+            chars: Math.floor((buf.length - 32) / 8),
+            duration: buf.duration.toFixed(1),
+            sampleRate: buf.sampleRate
+          });
+        } catch { reject(new Error('Cannot read audio')); }
+      };
+      reader.readAsArrayBuffer(audioFile);
+    });
+  }
+
+  return { hide, extract, getCapacity };
+})();
+
+</script>
+<script>
+/* VOID — visualkey.js | Image-as-Password via perceptual hash */
+
+const VoidVisualKey = (() => {
+
+  /* Generate a deterministic 256-bit key from an image
+     Uses average hash (aHash) + difference hash (dHash) combined */
+  async function deriveKeyFromImage(imageDataUrl) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          /* Step 1: Render to small canvas for hash extraction */
+          const SIZE = 32;
+          const canvas = document.createElement('canvas');
+          canvas.width = SIZE; canvas.height = SIZE;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, SIZE, SIZE);
+          const pixels = ctx.getImageData(0, 0, SIZE, SIZE).data;
+
+          /* Step 2: Convert to grayscale values */
+          const gray = [];
+          for (let i = 0; i < SIZE * SIZE; i++) {
+            const r = pixels[i*4], g = pixels[i*4+1], b = pixels[i*4+2];
+            gray.push(Math.round(0.299*r + 0.587*g + 0.114*b));
+          }
+
+          /* Step 3: aHash — compare each pixel to mean */
+          const mean = gray.reduce((a,b) => a+b, 0) / gray.length;
+          let aHashBits = gray.map(v => v >= mean ? 1 : 0);
+
+          /* Step 4: dHash — compare adjacent pixels (8x8 grid) */
+          const DSIZE = 9;
+          const dCanvas = document.createElement('canvas');
+          dCanvas.width = DSIZE; dCanvas.height = 8;
+          const dCtx = dCanvas.getContext('2d');
+          dCtx.drawImage(img, 0, 0, DSIZE, 8);
+          const dPixels = dCtx.getImageData(0, 0, DSIZE, 8).data;
+          const dGray = [];
+          for (let i = 0; i < DSIZE * 8; i++) {
+            dGray.push(Math.round(0.299*dPixels[i*4] + 0.587*dPixels[i*4+1] + 0.114*dPixels[i*4+2]));
+          }
+          let dHashBits = [];
+          for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+              dHashBits.push(dGray[row*DSIZE+col] > dGray[row*DSIZE+col+1] ? 1 : 0);
+            }
+          }
+
+          /* Step 5: Combine both hashes → 256-bit key material */
+          const combined = [...aHashBits.slice(0,128), ...dHashBits.slice(0,64),
+                            ...aHashBits.slice(128,192), ...dHashBits.slice(64,128)];
+
+          /* Step 6: Pack bits into bytes → base64 key string */
+          const keyBytes = new Uint8Array(32);
+          for (let i = 0; i < 32; i++) {
+            let byte = 0;
+            for (let j = 0; j < 8; j++) byte = (byte << 1) | (combined[i*8+j] || 0);
+            keyBytes[i] = byte;
+          }
+
+          const keyB64 = btoa(String.fromCharCode(...keyBytes));
+          resolve(keyB64);
+        } catch(e) {
+          reject(new Error('Failed to process key image'));
+        }
+      };
+      img.onerror = () => reject(new Error('Failed to load key image'));
+      img.src = imageDataUrl;
+    });
+  }
+
+  /* Get a visual "fingerprint" preview of the key (8x8 colored grid) */
+  function getKeyFingerprint(imageDataUrl) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const SIZE = 8;
+        const canvas = document.createElement('canvas');
+        canvas.width = SIZE; canvas.height = SIZE;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, SIZE, SIZE);
+        resolve(canvas.toDataURL());
+      };
+      img.src = imageDataUrl;
+    });
+  }
+
+  return { deriveKeyFromImage, getKeyFingerprint };
+})();
+
+</script>
+<script>
+/* VOID — deaddrop.js | Dead Drop via public internet images */
+
+const VoidDeadDrop = (() => {
+
+  /* Curated list of stable, high-res PNG sources from public domains */
+  const SOURCES = [
+    {
+      name: 'NASA',
+      label: 'NASA Public Domain',
+      urls: [
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/GoldenGateBridge-001.jpg/1280px-GoldenGateBridge-001.jpg',
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/PNG_transparency_demonstration_1.png/280px-PNG_transparency_demonstration_1.png',
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/640px-Camponotus_flavomarginatus_ant.jpg',
+      ]
+    }
+  ];
+
+  /* Fetch a public image as ArrayBuffer via CORS proxy */
+  async function fetchPublicImage(url) {
+    /* Use a CORS proxy to bypass cross-origin restrictions */
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+    const resp = await fetch(proxyUrl);
+    if (!resp.ok) throw new Error('Failed to fetch image');
+    const blob = await resp.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  /* Encode: hide message in a fetched public image, return DEAD DROP KEY */
+  async function createDeadDrop(message, password, sourceImageUrl) {
+    /* 1. Fetch the public image */
+    const imageDataUrl = await fetchPublicImage(sourceImageUrl);
+
+    /* 2. Encrypt message */
+    const encrypted = await VoidCrypto.encryptWithDecoy(message, password, '');
+    const payload = 'V01D://' + encrypted;
+
+    /* 3. Hide in image */
+    const encodedDataUrl = await VoidSteg.hide(imageDataUrl, payload);
+
+    /* 4. Generate Dead Drop Key */
+    const seed = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const key = {
+      v: 1,
+      src: sourceImageUrl,
+      seed: seed,
+      ts: Date.now()
+    };
+    const keyStr = 'VOID-DROP://' + btoa(JSON.stringify(key));
+
+    return {
+      encodedImage: encodedDataUrl,
+      deadDropKey: keyStr,
+      seed: seed,
+      sourceUrl: sourceImageUrl
+    };
+  }
+
+  /* Decode: given a DEAD DROP KEY + password, fetch and extract */
+  async function readDeadDrop(deadDropKey, password, encodedImageDataUrl) {
+    /* If user provides the encoded image directly, use it */
+    if (encodedImageDataUrl) {
+      const raw = await VoidSteg.extract(encodedImageDataUrl);
+      const payload = raw.startsWith('V01D://') ? raw.slice(7) : raw;
+      return await VoidCrypto.decryptWithDecoy(payload, password, false);
+    }
+
+    /* Otherwise parse key and fetch */
+    if (!deadDropKey.startsWith('VOID-DROP://')) throw new Error('Invalid Dead Drop key');
+    const keyData = JSON.parse(atob(deadDropKey.replace('VOID-DROP://', '')));
+    const imageDataUrl = await fetchPublicImage(keyData.src);
+    const raw = await VoidSteg.extract(imageDataUrl);
+    const payload = raw.startsWith('V01D://') ? raw.slice(7) : raw;
+    return await VoidCrypto.decryptWithDecoy(payload, password, false);
+  }
+
+  return { createDeadDrop, readDeadDrop, SOURCES };
+})();
+
+</script>
+<script>
+/* VOID — app.js */
+(() => {
+  const $=id=>document.getElementById(id);
+  const timers={};
+
+  /* ── State ── */
+  let encImageData=null, decImageData=null;
+  let audioFile=null, audioDecFile=null;
+  let vkKeyData=null, vkCarrierData=null;
+  let vkDecKeyData=null, vkDecImgData=null;
+  let ddReadImageData=null;
+  let currentMethod='image';
+
+  /* ── Helpers ── */
+  function readFile(f,cb){const r=new FileReader();r.onload=e=>cb(e.target.result,f);r.readAsDataURL(f);}
+  function showErr(el,msg){if(!el)return;el.textContent='✕ '+msg;el.style.display='block';}
+  function hideErr(el){if(el)el.style.display='none';}
+  function selfDestruct(rEl,tEl,key){
+    if(timers[key])clearInterval(timers[key]);
+    let c=30;tEl.textContent=`SELF-DESTRUCT IN ${c}s`;
+    timers[key]=setInterval(()=>{c--;
+      if(c<=0){clearInterval(timers[key]);rEl.textContent='';rEl.style.color='#111';tEl.textContent='[ MESSAGE DESTROYED — VOID ]';tEl.style.color='#222';}
+      else tEl.textContent=`SELF-DESTRUCT IN ${c}s`;
+    },1000);
+  }
+  function setupDrop(dzId,inpId,onFile){
+    const dz=$(dzId),inp=$(inpId);
+    if(!dz||!inp)return;
+    dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+    dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+    dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])onFile(e.dataTransfer.files[0]);});
+    inp.addEventListener('change',()=>{if(inp.files[0])onFile(inp.files[0]);});
+  }
+
+  /* ══════════════════════════════════
+     TWO-LEVEL NAVIGATION
+  ══════════════════════════════════ */
+  const METHODS = ['image','audio','deaddrop','visualkey'];
+
+  function showPanels(method) {
+    /* Hide ALL enc/dec panels first */
+    METHODS.forEach(m => {
+      const e = $('enc-'+m);
+      const d = $('dec-'+m);
+      if(e) e.style.display = 'none';
+      if(d) d.style.display = 'none';
+    });
+    /* Show only the selected method */
+    const encEl = $('enc-'+method);
+    const decEl = $('dec-'+method);
+    if(encEl) encEl.style.display = 'block';
+    if(decEl) decEl.style.display = 'block';
+  }
+
+  function activateMethod(method) {
+    currentMethod = method;
+    document.querySelectorAll('.void-subtab').forEach(b =>
+      b.classList.toggle('active', b.dataset.method === method)
+    );
+    showPanels(method);
+  }
+
+  function showSubnav(show) {
+    const sn = $('subNav');
+    if(show) sn.classList.add('show');
+    else sn.classList.remove('show');
+  }
+
+  /* Main tabs */
+  document.querySelectorAll('.void-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const t = tab.dataset.tab;
+      document.querySelectorAll('.void-tab').forEach(x => x.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.void-section').forEach(s => s.classList.remove('active'));
+      $('tab-'+t).classList.add('active');
+      const hasSub = t==='encode' || t==='decode';
+      showSubnav(hasSub);
+      if(hasSub) showPanels(currentMethod);
+    });
+  });
+
+  /* Sub tabs */
+  document.querySelectorAll('.void-subtab').forEach(btn => {
+    btn.addEventListener('click', () => activateMethod(btn.dataset.method));
+  });
+
+  $('startBtn').addEventListener('click', () =>
+    document.querySelector('[data-tab="encode"]').click()
+  );
+
+  /* ══ LANG & I18N ══ */
+  function buildLangSwitcher(){
+    const c=$('langSwitcher');
+    VoidI18n.getLangs().forEach(lang=>{
+      const btn=document.createElement('button');
+      btn.className='void-lang-btn'+(lang===VoidI18n.getCurrent()?' active':'');
+      btn.textContent=VoidI18n.getLangFlag(lang);
+      btn.dataset.lang=lang;
+      btn.addEventListener('click',()=>{
+        VoidI18n.setLang(lang);buildFeatures();buildAboutBlocks();
+        localStorage.setItem('void-lang',lang);
+        document.querySelectorAll('.void-lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+      });
+      c.appendChild(btn);
+    });
+  }
+  function buildFeatures(){
+    $('featuresGrid').innerHTML=VoidI18n.langs[VoidI18n.getCurrent()].features
+      .map(f=>`<div class="void-feature"><div class="void-feature-icon">◎</div><div class="void-feature-title">${f.title}</div><div class="void-feature-desc">${f.desc}</div></div>`).join('');
+  }
+  function buildAboutBlocks(){
+    $('aboutBlocks').innerHTML=VoidI18n.langs[VoidI18n.getCurrent()].about.blocks
+      .map(b=>`<div class="void-about-block"><div class="void-about-num">${b.num}</div><div><div class="void-about-heading">${b.heading}</div><div class="void-about-text">${b.text}</div></div></div>`).join('');
+  }
+
+  /* ══ IMAGE PICKER FACTORY ══ */
+  function makeImgPicker(dzId,inpId,loadedId,imgId,metaId,nameId,replBtnId,replInpId,delBtnId,onLoad,onClear){
+    const dz=$(dzId),inp=$(inpId),loaded=$(loadedId);
+    if(!inp||!loaded)return;
+    function load(file){
+      readFile(file,(url,f)=>{
+        if(dz)dz.style.display='none';
+        loaded.classList.add('show');
+        $(imgId).src=url;
+        if(nameId&&$(nameId))$(nameId).textContent=f.name;
+        onLoad(url,f);
+      });
+    }
+    if(dz){
+      dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+      dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+      dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])load(e.dataTransfer.files[0]);});
+    }
+    inp.addEventListener('change',()=>{if(inp.files[0])load(inp.files[0]);});
+    if(delBtnId&&$(delBtnId)){
+      $(delBtnId).addEventListener('click',()=>{
+        if(dz)dz.style.display='block';
+        loaded.classList.remove('show');
+        $(imgId).src='';inp.value='';
+        if(onClear)onClear();
+      });
+    }
+    if(replBtnId&&replInpId&&$(replBtnId)&&$(replInpId)){
+      const ri=$(replInpId);
+      $(replBtnId).addEventListener('click',()=>ri.click());
+      ri.addEventListener('change',()=>{if(ri.files[0]){if(onClear)onClear();load(ri.files[0]);ri.value='';}});
+    }
+  }
+
+  /* ══════════════════════════════════
+     ENCODE › IMAGE
+  ══════════════════════════════════ */
+  $('encImgBtn').addEventListener('click',()=>{
+    $('encImgBtn').classList.add('active');$('encTxtBtn').classList.remove('active');
+    $('enc-img-carrier').style.display='block';$('enc-code-info').style.display='none';
+    $('encOutput').style.display='none';
+  });
+  $('encTxtBtn').addEventListener('click',()=>{
+    $('encTxtBtn').classList.add('active');$('encImgBtn').classList.remove('active');
+    $('enc-img-carrier').style.display='none';$('enc-code-info').style.display='block';
+    $('encOutput').style.display='none';
+  });
+
+  makeImgPicker('encDropZone','encImageInput','encImgLoaded','encLoadedImg','encLoadedMeta','encLoadedName',
+    'encReplaceBtn','encReplaceInput','encDeleteBtn',
+    (url,file)=>{
+      encImageData=url;
+      VoidSteg.getCapacity(url).then(cap=>{
+        $('encLoadedMeta').textContent=`${cap.width}×${cap.height} · ${(file.size/1024).toFixed(0)}KB · ~${cap.chars.toLocaleString()} chars`;
+        $('encCapacity').style.display='block';
+        $('encCapText').textContent=`~${cap.chars.toLocaleString()} chars available`;
+        $('encMessage').addEventListener('input',function(){
+          const pct=Math.min(100,(this.value.length/cap.chars)*100);
+          $('encCapFill').style.width=pct+'%';
+          $('encCapFill').classList.toggle('warn',pct>80);
+          $('encCapText').textContent=`${this.value.length.toLocaleString()} / ~${cap.chars.toLocaleString()} chars`;
+        });
+      }).catch(()=>{});
+    },
+    ()=>{encImageData=null;$('encCapacity').style.display='none';}
+  );
+
+  $('encodeBtn').addEventListener('click',async()=>{
+    const msg=$('encMessage').value.trim(),pw=$('encPassword').value.trim(),decoy=$('encDecoy').value.trim();
+    const isImg=$('encImgBtn').classList.contains('active');
+    if(!msg)return showEncErr('Write a message first.');
+    if(!pw)return showEncErr('Set a password.');
+    if(isImg&&!encImageData)return showEncErr('Select a PNG image first.');
+    const btn=$('encodeBtn');btn.textContent='ENCRYPTING...';btn.disabled=true;
+    try{
+      const payload=await VoidCrypto.encryptWithDecoy(msg,pw,decoy);
+      if(isImg){const r=await VoidSteg.hide(encImageData,'V01D://'+payload);showEncImgResult(r);}
+      else showEncCodeResult('V01D://'+payload);
+    }catch(e){showEncErr(e.message||'Encryption failed.');}
+    btn.textContent='ENCRYPT & HIDE';btn.disabled=false;
+  });
+  function showEncErr(m){$('encOutputHeader').textContent='ERROR';$('encResult').innerHTML=`<div style="color:#e24b4a;font-weight:900;">${m}</div>`;$('encOutput').style.display='block';}
+  function showEncImgResult(url){
+    $('encOutputHeader').textContent='ENCODED IMAGE';
+    $('encResult').innerHTML=`<img src="${url}" style="width:100%;max-height:180px;object-fit:cover;display:block;margin-bottom:.75rem;filter:brightness(.65)">
+      <a href="${url}" download="void_${Date.now()}.png" class="void-dl-btn">↓ DOWNLOAD ENCODED IMAGE</a>
+      <div style="font-size:12px;font-weight:700;color:#444;margin-top:.75rem;line-height:1.9;">Send via Telegram or email. Never WhatsApp.</div>`;
+    $('encOutput').style.display='block';
+  }
+  function showEncCodeResult(code){
+    $('encOutputHeader').textContent='VOID CODE';
+    $('encResult').innerHTML=`<div class="void-code-output" id="voidCodeText">${code}</div><button class="void-copy-btn" onclick="copyText('voidCodeText',this)">COPY CODE</button>`;
+    $('encOutput').style.display='block';
+  }
+  window.copyText=function(id,btn){
+    navigator.clipboard.writeText($(id).textContent).then(()=>{btn.textContent='COPIED ✓';setTimeout(()=>btn.textContent='COPY CODE',2500);});
+  };
+
+  /* ══════════════════════════════════
+     DECODE › IMAGE
+  ══════════════════════════════════ */
+  $('decImgBtn').addEventListener('click',()=>{
+    $('decImgBtn').classList.add('active');$('decTxtBtn').classList.remove('active');
+    $('dec-img-zone').style.display='block';$('dec-code-zone').style.display='none';
+    $('decOutput').style.display='none';hideErr($('decError'));
+  });
+  $('decTxtBtn').addEventListener('click',()=>{
+    $('decTxtBtn').classList.add('active');$('decImgBtn').classList.remove('active');
+    $('dec-img-zone').style.display='none';$('dec-code-zone').style.display='block';
+    $('decOutput').style.display='none';hideErr($('decError'));
+  });
+
+  setupDrop('decDropZone','decImageInput',file=>readFile(file,(url,f)=>{
+    decImageData=url;$('decPreviewImg').src=url;$('decPreview').classList.add('show');$('decImgInfo').textContent=f.name;
+  }));
+
+  $('decodeBtn').addEventListener('click',async()=>{
+    const pw=$('decPassword').value.trim();
+    if(!pw)return showErr($('decError'),'Enter the password.');
+    const isImg=$('decImgBtn').classList.contains('active');
+    const btn=$('decodeBtn');btn.textContent='EXTRACTING...';btn.disabled=true;
+    $('decOutput').style.display='none';hideErr($('decError'));
+    try{
+      let payload='';
+      if(isImg){
+        if(!decImageData){btn.textContent='REVEAL MESSAGE';btn.disabled=false;return showErr($('decError'),'Load an image first.');}
+        const raw=await VoidSteg.extract(decImageData);
+        payload=raw.startsWith('V01D://')?raw.slice(7):raw;
+      }else{
+        let c=$('decVoidCode').value.trim();
+        payload=c.startsWith('V01D://')?c.slice(7):c;
+        if(!payload){btn.textContent='REVEAL MESSAGE';btn.disabled=false;return showErr($('decError'),'Paste a VOID CODE first.');}
+      }
+      let msg;
+      try{msg=await VoidCrypto.decryptWithDecoy(payload,pw,false);}
+      catch{try{msg=await VoidCrypto.decryptWithDecoy(payload,pw,true);if(!msg)throw new Error();}
+      catch{throw new Error('Wrong password or corrupted data.');}}
+      $('decResult').textContent=msg;$('decResult').style.color='';
+      $('decOutput').style.display='block';
+      selfDestruct($('decResult'),$('selfDestruct'),'dec');
+    }catch(e){showErr($('decError'),e.message||'Decryption failed.');}
+    btn.textContent='REVEAL MESSAGE';btn.disabled=false;
+  });
+
+  /* ══════════════════════════════════
+     ENCODE › AUDIO
+  ══════════════════════════════════ */
+  setupDrop('audioDropZone','audioInput',async file=>{
+    audioFile=file;
+    $('audioPreview').style.display='block';
+    $('audioPlayer').src=URL.createObjectURL(file);
+    try{
+      const cap=await VoidAudio.getCapacity(file);
+      $('audioInfo').textContent=`${cap.duration}s · ${cap.sampleRate}Hz · ~${cap.chars.toLocaleString()} chars`;
+      $('audioCapacity').style.display='block';
+      $('audioCapText').textContent=`~${cap.chars.toLocaleString()} chars available`;
+      $('audioMessage').addEventListener('input',function(){
+        const pct=Math.min(100,(this.value.length/cap.chars)*100);
+        $('audioCapFill').style.width=pct+'%';
+        $('audioCapFill').classList.toggle('warn',pct>80);
+        $('audioCapText').textContent=`${this.value.length.toLocaleString()} / ~${cap.chars.toLocaleString()} chars`;
+      });
+    }catch(e){}
+  });
+
+  $('audioEncodeBtn').addEventListener('click',async()=>{
+    const msg=$('audioMessage').value.trim(),pw=$('audioPassword').value.trim();
+    if(!audioFile)return alert('Select an audio file first.');
+    if(!msg)return alert('Write a message first.');
+    if(!pw)return alert('Set a password.');
+    const btn=$('audioEncodeBtn');btn.textContent='PROCESSING...';btn.disabled=true;
+    try{
+      const enc=await VoidCrypto.encryptWithDecoy(msg,pw,'');
+      const wavUrl=await VoidAudio.hide(audioFile,'V01D://'+enc);
+      $('audioEncOutput').style.display='block';
+      $('audioEncResult').innerHTML=`
+        <audio controls src="${wavUrl}" style="width:100%;margin-bottom:.75rem;filter:invert(1) hue-rotate(180deg);"></audio>
+        <a href="${wavUrl}" download="void_audio_${Date.now()}.wav" class="void-dl-btn">↓ DOWNLOAD ENCODED WAV</a>
+        <div style="font-size:12px;font-weight:700;color:#444;margin-top:.75rem;line-height:1.9;">Send as WAV only — MP3 re-encoding destroys hidden data.</div>`;
+    }catch(e){alert('Error: '+e.message);}
+    btn.textContent='🎵 HIDE IN AUDIO';btn.disabled=false;
+  });
+
+  /* ══════════════════════════════════
+     DECODE › AUDIO
+  ══════════════════════════════════ */
+  setupDrop('audioDecDropZone','audioDecInput',file=>{
+    audioDecFile=file;
+    $('audioDecPreview').style.display='block';
+    $('audioDecPlayer').src=URL.createObjectURL(file);
+  });
+
+  $('audioDecodeBtn').addEventListener('click',async()=>{
+    const pw=$('audioDecPassword').value.trim();
+    if(!audioDecFile)return showErr($('audioDecError'),'Load an audio file first.');
+    if(!pw)return showErr($('audioDecError'),'Enter the password.');
+    hideErr($('audioDecError'));
+    const btn=$('audioDecodeBtn');btn.textContent='EXTRACTING...';btn.disabled=true;
+    try{
+      const raw=await VoidAudio.extract(audioDecFile);
+      const payload=raw.startsWith('V01D://')?raw.slice(7):raw;
+      const msg=await VoidCrypto.decryptWithDecoy(payload,pw,false);
+      $('audioDecResult').textContent=msg;$('audioDecResult').style.color='';
+      $('audioDecOutput').style.display='block';
+      selfDestruct($('audioDecResult'),$('audioSelfDestruct'),'audio');
+    }catch(e){showErr($('audioDecError'),e.message||'Wrong password or no VOID data.');}
+    btn.textContent='🎵 EXTRACT MESSAGE';btn.disabled=false;
+  });
+
+  /* ══════════════════════════════════
+     ENCODE › DEAD DROP
+  ══════════════════════════════════ */
+  $('ddCreateDropBtn').addEventListener('click',async()=>{
+    const msg=$('ddMessage').value.trim(),pw=$('ddPassword').value.trim(),url=$('ddCustomUrl').value.trim();
+    if(!msg)return showErr($('ddCreateError'),'Write a message.');
+    if(!pw)return showErr($('ddCreateError'),'Set a password.');
+    if(!url)return showErr($('ddCreateError'),'Enter a public image URL.');
+    hideErr($('ddCreateError'));
+    const btn=$('ddCreateDropBtn');btn.textContent='CREATING DROP...';btn.disabled=true;
+    try{
+      const result=await VoidDeadDrop.createDeadDrop(msg,pw,url);
+      $('ddCreateOutput').style.display='block';
+      $('ddCreateResult').innerHTML=`
+        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:.5rem;">DEAD DROP KEY — SEND THIS:</div>
+        <div class="void-dead-drop-key" id="ddKeyText">${result.deadDropKey}</div>
+        <button class="void-copy-btn" onclick="copyText('ddKeyText',this)">COPY KEY</button>
+        <a href="${result.encodedImage}" download="void_drop_${Date.now()}.png" class="void-dl-btn" style="margin-top:1rem;">↓ DOWNLOAD BACKUP IMAGE</a>
+        <div style="font-size:12px;font-weight:700;color:#444;margin-top:.75rem;line-height:1.9;">Send only the key. Share password separately.</div>`;
+    }catch(e){showErr($('ddCreateError'),'Failed: '+e.message);}
+    btn.textContent='☠ CREATE DEAD DROP';btn.disabled=false;
+  });
+
+  /* ══════════════════════════════════
+     DECODE › DEAD DROP
+  ══════════════════════════════════ */
+  setupDrop('ddReadDropZone','ddReadImageInput',file=>readFile(file,url=>{ddReadImageData=url;}));
+
+  $('ddReadBtn').addEventListener('click',async()=>{
+    const key=$('ddKey').value.trim(),pw=$('ddReadPassword').value.trim();
+    if(!pw)return showErr($('ddReadError'),'Enter the password.');
+    hideErr($('ddReadError'));
+    const btn=$('ddReadBtn');btn.textContent='RETRIEVING...';btn.disabled=true;
+    try{
+      const msg=await VoidDeadDrop.readDeadDrop(key||null,pw,ddReadImageData||null);
+      $('ddReadResult').textContent=msg;$('ddReadResult').style.color='';
+      $('ddReadOutput').style.display='block';
+      selfDestruct($('ddReadResult'),$('ddSelfDestruct'),'dd');
+    }catch(e){showErr($('ddReadError'),e.message||'Failed to retrieve message.');}
+    btn.textContent='☠ RETRIEVE MESSAGE';btn.disabled=false;
+  });
+
+  /* ══════════════════════════════════
+     VISUAL KEY PICKER FACTORY
+  ══════════════════════════════════ */
+  function makeVKPicker(dzId,inpId,loadedId,imgId,clearId,fpId,onLoad,onClear){
+    const dz=$(dzId),inp=$(inpId),loaded=$(loadedId);
+    if(!inp||!loaded)return;
+    function load(file){
+      readFile(file,async(url)=>{
+        if(dz)dz.style.display='none';
+        loaded.classList.add('show');
+        $(imgId).src=url;
+        const fp=await VoidVisualKey.getKeyFingerprint(url);
+        $(fpId).innerHTML=`<img src="${fp}"><span class="void-vk-fingerprint-label">VISUAL FINGERPRINT</span>`;
+        onLoad(url);
+      });
+    }
+    if(dz){
+      dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+      dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+      dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])load(e.dataTransfer.files[0]);});
+    }
+    inp.addEventListener('change',()=>{if(inp.files[0])load(inp.files[0]);});
+    if($(clearId)){
+      $(clearId).addEventListener('click',()=>{
+        if(dz)dz.style.display='block';
+        loaded.classList.remove('show');
+        $(imgId).src='';inp.value='';
+        if(onClear)onClear();
+      });
+    }
+  }
+
+  /* ══════════════════════════════════
+     ENCODE › VISUAL KEY
+  ══════════════════════════════════ */
+  makeVKPicker('vkKeyDropZone','vkKeyInput','vkKeyLoaded','vkKeyImg','vkKeyClearBtn','vkEncFingerprint',
+    url=>{vkKeyData=url;},()=>{vkKeyData=null;}
+  );
+  makeImgPicker('vkCarrierDropZone','vkCarrierInput','vkCarrierLoaded','vkCarrierImg','vkCarrierMeta',
+    null,null,null,'vkCarrierClearBtn',
+    (url,file)=>{vkCarrierData=url;$('vkCarrierMeta').textContent=`${file.name} · ${(file.size/1024).toFixed(0)}KB`;},
+    ()=>{vkCarrierData=null;}
+  );
+
+  $('vkEncodeBtn').addEventListener('click',async()=>{
+    const msg=$('vkMessage').value.trim();
+    if(!vkKeyData)return showErr($('vkEncError'),'Load your key image first.');
+    if(!vkCarrierData)return showErr($('vkEncError'),'Load a carrier PNG image.');
+    if(!msg)return showErr($('vkEncError'),'Write a message.');
+    hideErr($('vkEncError'));
+    const btn=$('vkEncodeBtn');btn.textContent='LOCKING...';btn.disabled=true;
+    try{
+      const vp=await VoidVisualKey.deriveKeyFromImage(vkKeyData);
+      const payload=await VoidCrypto.encryptWithDecoy(msg,vp,'');
+      const result=await VoidSteg.hide(vkCarrierData,'V01D://'+payload);
+      $('vkEncOutput').style.display='block';
+      $('vkEncResult').innerHTML=`
+        <img src="${result}" style="width:100%;max-height:180px;object-fit:cover;display:block;margin-bottom:.75rem;filter:brightness(.65)">
+        <a href="${result}" download="void_vk_${Date.now()}.png" class="void-dl-btn">↓ DOWNLOAD LOCKED IMAGE</a>
+        <div style="font-size:12px;font-weight:700;color:#444;margin-top:.75rem;line-height:1.9;">Recipient needs your exact key image to unlock.</div>`;
+    }catch(e){showErr($('vkEncError'),e.message||'Failed to lock.');}
+    btn.textContent='👁 LOCK WITH IMAGE KEY';btn.disabled=false;
+  });
+
+  /* ══════════════════════════════════
+     DECODE › VISUAL KEY
+  ══════════════════════════════════ */
+  makeVKPicker('vkDecKeyDropZone','vkDecKeyInput','vkDecKeyLoaded','vkDecKeyImg','vkDecKeyClearBtn','vkDecFingerprint',
+    url=>{vkDecKeyData=url;},()=>{vkDecKeyData=null;}
+  );
+  setupDrop('vkDecImgDropZone','vkDecImgInput',file=>readFile(file,url=>{
+    vkDecImgData=url;$('vkDecPreviewImg').src=url;$('vkDecImgPreview').classList.add('show');
+  }));
+
+  $('vkDecodeBtn').addEventListener('click',async()=>{
+    if(!vkDecKeyData)return showErr($('vkDecError'),'Load your key image first.');
+    if(!vkDecImgData)return showErr($('vkDecError'),'Load the encoded image.');
+    hideErr($('vkDecError'));
+    const btn=$('vkDecodeBtn');btn.textContent='UNLOCKING...';btn.disabled=true;
+    try{
+      const vp=await VoidVisualKey.deriveKeyFromImage(vkDecKeyData);
+      const raw=await VoidSteg.extract(vkDecImgData);
+      const payload=raw.startsWith('V01D://')?raw.slice(7):raw;
+      const msg=await VoidCrypto.decryptWithDecoy(payload,vp,false);
+      $('vkDecResult').textContent=msg;$('vkDecResult').style.color='';
+      $('vkDecOutput').style.display='block';
+      selfDestruct($('vkDecResult'),$('vkSelfDestruct'),'vk');
+    }catch(e){showErr($('vkDecError'),'Wrong key image or corrupted data.');}
+    btn.textContent='🔓 UNLOCK WITH IMAGE KEY';btn.disabled=false;
+  });
+
+  /* ══ INIT ══ */
+  const savedLang=localStorage.getItem('void-lang')||'en';
+  VoidI18n.setLang(savedLang);
+  buildLangSwitcher();
+  buildFeatures();
+  buildAboutBlocks();
+
+  /* Hide all method panels initially — show only when tab is clicked */
+  METHODS.forEach(m=>{
+    const e=$('enc-'+m), d=$('dec-'+m);
+    if(e) e.style.display='none';
+    if(d) d.style.display='none';
+  });
+
+})();
+
+</script>
 </body>
 </html>
