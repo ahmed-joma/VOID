@@ -28,7 +28,7 @@
   <section id="tab-home" class="void-section active">
     <div class="void-hero">
       <div class="void-glitch" data-text="V0ID">V<span>0</span>ID</div>
-      <p class="void-hero-sub" data-i18n="hero.sub">hide anything inside anything.<br>zero server. zero logs. zero trace.</p>
+      <p class="void-hero-sub" data-i18n="hero.sub"></p>
       <div class="void-features-grid" id="featuresGrid"></div>
       <button class="void-cta" id="startBtn" data-i18n="hero.cta">ENTER VOID →</button>
     </div>
@@ -46,26 +46,54 @@
         <button class="void-mode-btn"        id="encTxtBtn" data-i18n="encode.voidCode">⬡ VOID CODE</button>
       </div>
 
+      <!-- IMAGE PICKER -->
       <div id="enc-image-mode">
         <label class="void-label" data-i18n="encode.selectImage">SELECT CARRIER IMAGE</label>
-        <div class="void-drop-zone" id="encDropZone">
-          <input type="file" accept="image/png,image/bmp" id="encImageInput">
-          <div class="void-drop-inner">
+
+        <div class="void-img-picker" id="encImgPicker">
+
+          <!-- حالة فارغة: منطقة الإفلات -->
+          <div class="void-drop-zone" id="encDropZone">
+            <input type="file" accept="image/png,image/bmp" id="encImageInput">
             <div class="void-drop-icon">↑</div>
             <div class="void-drop-text" data-i18n="encode.dropText">drop PNG or BMP here</div>
-            <div class="void-drop-hint" data-i18n="encode.dropHint">JPEG compresses and destroys hidden data — use PNG only</div>
+            <div class="void-drop-hint" data-i18n="encode.dropHint">JPEG compresses hidden data — PNG only</div>
           </div>
-        </div>
-        <div class="void-img-preview" id="encPreview">
-          <img id="encPreviewImg" src="" alt="preview">
-          <div class="void-img-info" id="encImgInfo"></div>
+
+          <!-- حالة محملة: الصورة + أزرار التحكم -->
+          <div class="void-img-loaded" id="encImgLoaded">
+            <img class="void-img-loaded-img" id="encLoadedImg" src="" alt="">
+
+            <!-- أزرار تظهر عند hover -->
+            <div class="void-img-actions">
+              <button class="void-img-action-btn replace" id="encReplaceBtn">
+                ↺ <span data-i18n="encode.replaceImg">REPLACE</span>
+              </button>
+              <button class="void-img-action-btn danger" id="encDeleteBtn">
+                ✕ <span data-i18n="encode.deleteImg">REMOVE</span>
+              </button>
+            </div>
+
+            <!-- معلومات الصورة في الأسفل -->
+            <div class="void-img-loaded-info">
+              <div>
+                <div class="void-img-loaded-meta" id="encLoadedMeta"></div>
+                <div class="void-img-loaded-name" id="encLoadedName"></div>
+              </div>
+            </div>
+
+            <!-- input مخفي للاستبدال -->
+            <input type="file" accept="image/png,image/bmp" id="encReplaceInput" class="void-replace-input">
+          </div>
+
         </div>
       </div>
 
+      <!-- TEXT MODE -->
       <div id="enc-text-mode" style="display:none">
         <div class="void-info-box">
           <span class="void-info-icon">⬡</span>
-          <span data-i18n="encode.textModeInfo">Your message will be encrypted and encoded as a VOID CODE string.<br>Send it as plain text — it looks like random noise to anyone else.</span>
+          <span data-i18n="encode.textModeInfo"></span>
         </div>
       </div>
 
@@ -114,29 +142,27 @@
 
       <div id="dec-image-mode">
         <label class="void-label" data-i18n="decode.encodedImg">ENCODED IMAGE</label>
-        <div class="void-drop-zone" id="decDropZone">
+        <div class="void-drop-zone-dec" id="decDropZone">
           <input type="file" accept="image/png,image/bmp" id="decImageInput">
-          <div class="void-drop-inner">
-            <div class="void-drop-icon">↓</div>
-            <div class="void-drop-text" data-i18n="decode.dropText">drop the encoded image</div>
-            <div class="void-drop-hint" data-i18n="decode.dropHint">must be the exact file — do not compress or screenshot</div>
-          </div>
+          <div class="void-drop-icon">↓</div>
+          <div class="void-drop-text" data-i18n="decode.dropText">drop the encoded image</div>
+          <div class="void-drop-hint" data-i18n="decode.dropHint">must be the exact file — do not compress</div>
         </div>
-        <div class="void-img-preview" id="decPreview">
+        <div class="void-img-preview-dec" id="decPreview">
           <img id="decPreviewImg" src="" alt="preview">
+          <div class="void-img-info-dec" id="decImgInfo"></div>
         </div>
       </div>
 
       <div id="dec-text-mode" style="display:none">
         <label class="void-label" data-i18n="decode.voidCodeLabel">VOID CODE</label>
-        <textarea class="void-textarea" id="decVoidCode" data-i18n-ph="decode.voidCodePh" placeholder="V01D://... paste the code here"></textarea>
+        <textarea class="void-textarea" id="decVoidCode" data-i18n-ph="decode.voidCodePh" placeholder="V01D://..."></textarea>
       </div>
 
       <label class="void-label" data-i18n="decode.password">PASSWORD</label>
       <input type="password" class="void-input" id="decPassword" data-i18n-ph="decode.passwordPh" placeholder="Enter the password...">
 
       <button class="void-btn" id="decodeBtn" data-i18n="decode.btn">REVEAL MESSAGE</button>
-
       <div class="void-output" id="decOutput" style="display:none">
         <div class="void-output-header" data-i18n="decode.outputHeader">REVEALED MESSAGE</div>
         <div class="void-revealed-msg" id="decResult"></div>
@@ -155,14 +181,11 @@
         <div class="void-warning-title" data-i18n="about.warningTitle">⚠ OPERATIONAL SECURITY</div>
         <div class="void-warning-text"  data-i18n="about.warningText"></div>
       </div>
-      <div class="void-footer-links">
-        <a href="https://github.com/ahmed-joma/VOID" target="_blank" class="void-gh-link" data-i18n="about.ghLink">VIEW SOURCE ON GITHUB →</a>
-      </div>
+      <a href="https://github.com/ahmed-joma/VOID" target="_blank" class="void-gh-link" data-i18n="about.ghLink">VIEW SOURCE ON GITHUB →</a>
     </div>
   </section>
 
 </div>
-
 <script src="src/i18n.js"></script>
 <script src="src/crypto.js"></script>
 <script src="src/steg.js"></script>
